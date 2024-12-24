@@ -1,0 +1,23 @@
+#root {
+  margin: 0 auto;
+  padding: 2rem;
+  text-align: center;
+}
+
+body {
+  margin: 0;
+  min-width: 320px;
+  min-height: 100vh;
+  background-color: #242424;
+}
+
+h1 {
+  color: #ffffff;
+  font-size: 3.2em;
+  line-height: 1.1;
+  padding: 1em;
+}
+
+h4 {
+  color: #ffffff;
+}
