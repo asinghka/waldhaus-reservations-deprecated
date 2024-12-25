@@ -52,18 +52,22 @@ function ReservationTable({filterToday}) {
 
     return (
         <>
-            <Form className="mb-3">
-                <Form.Group controlId="nameFilter">
-                    <Form.Control
-                        className="ms-1"
-                        style={{ maxWidth: '400px' }}
-                        type="text"
-                        placeholder="Nach Namen filtern"
-                        value={filterTerm}
-                        onChange={(e) => setFilterTerm(e.target.value)}
-                    />
-                </Form.Group>
-            </Form>
+            <div>
+                <Form className="mb-3 d-flex">
+                    <Form.Group controlId="nameFilter">
+                        <Form.Control
+                            className="ms-auto"
+                            size="lg"
+                            style={{ minWidth: '300px' }}
+                            type="text"
+                            placeholder="Nach Namen filtern"
+                            value={filterTerm}
+                            onChange={(e) => setFilterTerm(e.target.value)}
+                        />
+                    </Form.Group>
+                    <Button size="lg" className="ms-auto" onClick={handleShow}>Neue Reservierung</Button>
+                </Form>
+            </div>
             <Table striped bordered hover variant="">
                 <thead>
                 <tr>
@@ -88,7 +92,6 @@ function ReservationTable({filterToday}) {
                 ))}
                 </tbody>
             </Table>
-            <Button size="lg" onClick={handleShow}>Neue Reservierung</Button>
             <ReservationModal showModal={showModal} handleClose={handleClose} saveReservation={saveReservation} />
         </>
     );
