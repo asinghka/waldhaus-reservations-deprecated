@@ -1,16 +1,26 @@
-import { useState } from 'react';
+import {useEffect, useState} from 'react';
 import DatePicker from 'react-widgets/DatePicker';
 import TimeInput from "react-widgets/TimeInput";
 import NumberPicker from "react-widgets/NumberPicker";
 import { Modal, Button, Form } from 'react-bootstrap';
 
-const ReservationModal = ({ showModal, handleClose, saveReservation }) => {
+const ReservationModal = ({ showModal, handleClose, saveReservation, initialReservations }) => {
     // State for form fields
     const [name, setName] = useState('');
     const [date, setDate] = useState(new Date());
     const [time, setTime] = useState(new Date());
     const [count, setCount] = useState(2);
     const [contact, setContact] = useState('');
+
+    useEffect(() => {
+        if (initialReservations) {
+            setName(initialReservations.name);
+            setDate(new Date(initialReservations.date));
+            setTime(new Date(initialReservations.time));
+            setCount(initialReservations.count);
+            setContact(initialReservations.contact);
+        }
+    }, [initialReservations]);
 
     const handleSave = () => {
         const reservation = { name, date, time, count, contact };

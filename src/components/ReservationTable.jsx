@@ -34,6 +34,7 @@ function ReservationTable({filterToday}) {
     const handleClose = () => setShowModal(false);
 
     const [reservations, setReservations] = useState([]);
+    const [selectedReservation, setSelectedReservation] = useState(null);
 
     const [filterTerm, setFilterTerm] = useState("");
     const [filterDate, setFilterDate] = useState(new Date());
@@ -42,6 +43,11 @@ function ReservationTable({filterToday}) {
         // Fetch all reservations from the backend when the component mounts
         fetchReservations();
     }, []);
+
+    const handleRowClick = (reservation) => {
+        setSelectedReservation(reservation);
+        setShowModal(true);
+    }
 
     const filteredReservations = reservations.filter((reservation) => {
         let isFilterDate;
@@ -99,7 +105,7 @@ function ReservationTable({filterToday}) {
                 </thead>
                 <tbody>
                 {filteredReservations.map((reservation) => (
-                    <tr key={reservation.id}>
+                    <tr key={reservation.id} onClick={() => handleRowClick(reservation)} style={{ cursor: 'pointer' }}>
                         <td>{reservation.name}</td>
                         <td>
                             {new Date(reservation.date).toLocaleDateString('de-DE')}
@@ -112,7 +118,7 @@ function ReservationTable({filterToday}) {
                 ))}
                 </tbody>
             </Table>
-            <ReservationModal showModal={showModal} handleClose={handleClose} saveReservation={saveReservation} />
+            <ReservationModal showModal={showModal} handleClose={handleClose} saveReservation={saveReservation} initialReservations={selectedReservation} />
         </>
     );
 }
