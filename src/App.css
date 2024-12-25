@@ -8,22 +8,16 @@ body {
   margin: 0;
   min-width: 320px;
   min-height: 100vh;
-  background-color: #242424;
+  background-color: #ffffff;
 }
 
 h1 {
-  color: #ffffff;
   font-size: 3.2em;
   line-height: 1.1;
   padding: 1em;
 }
 
 h2 {
-  color: #ffffff;
   line-height: 1.1;
   padding: 1em;
-}
-
-h4 {
-  color: #ffffff;
 }

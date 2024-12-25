@@ -64,7 +64,7 @@ function ReservationTable({filterToday}) {
                     />
                 </Form.Group>
             </Form>
-            <Table striped bordered hover variant="dark">
+            <Table striped bordered hover variant="">
                 <thead>
                 <tr>
                     <th>Name</th>
@@ -88,7 +88,7 @@ function ReservationTable({filterToday}) {
                 ))}
                 </tbody>
             </Table>
-            <Button onClick={handleShow}>Neue Reservierung</Button>
+            <Button size="lg" onClick={handleShow}>Neue Reservierung</Button>
             <ReservationModal showModal={showModal} handleClose={handleClose} saveReservation={saveReservation} />
         </>
     );
