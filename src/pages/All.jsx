@@ -3,7 +3,7 @@ import ReservationTable from "../components/ReservationTable.jsx";
 function All() {
     return (
         <>
-            <h1>Alle Reservierungen</h1>
+            <h2>Alle Reservierungen</h2>
             <ReservationTable filterToday={false} />
         </>
     )

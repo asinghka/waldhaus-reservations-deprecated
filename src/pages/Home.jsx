@@ -3,7 +3,7 @@ import ReservationTable from "../components/ReservationTable.jsx";
 function Home() {
     return (
         <>
-            <h1>Heutige Reservierungen</h1>
+            <h2>Heutige Reservierungen</h2>
             <ReservationTable filterToday={true} />
         </>
     )

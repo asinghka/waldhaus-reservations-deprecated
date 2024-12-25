@@ -3,7 +3,7 @@ import {NavLink} from 'react-router-dom';
 
 function CustomLink({ to, children, ...props }) {
     return (
-        <Nav.Item>
+        <Nav.Item className="ms-2">
             <Nav.Link as={NavLink} to={to} {...props}>{ children }</Nav.Link>
         </Nav.Item>
     )
@@ -11,7 +11,7 @@ function CustomLink({ to, children, ...props }) {
 
 function NavBar() {
     return (
-        <Nav fill variant="tabs" defaultActiveKey="/">
+        <Nav variant="tabs" defaultActiveKey="/">
             <CustomLink to="/">Heute</CustomLink>
             <CustomLink to="/all">Alle Reservierungen</CustomLink>
         </Nav>
