@@ -4,7 +4,7 @@ function All() {
     return (
         <>
             <h1>Alle Reservierungen</h1>
-            <ReservationTable/>
+            <ReservationTable filterToday={false} />
         </>
     )
 }

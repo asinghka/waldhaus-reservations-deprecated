@@ -1,8 +1,8 @@
-import {Button, Table} from "react-bootstrap";
+import {Button, Form, Table} from "react-bootstrap";
 import ReservationModal from "./ReservationModal.jsx";
 import {useEffect, useState} from "react";
 
-function ReservationTable() {
+function ReservationTable({filterToday}) {
     const saveReservation = (reservation) => {
         // Send POST request to backend to save reservation
         fetch('http://localhost:3001/reservations', {
@@ -32,13 +32,38 @@ function ReservationTable() {
     const handleShow = () => setShowModal(true);
     const handleClose = () => setShowModal(false);
     const [reservations, setReservations] = useState([]);
+    const [filterTerm, setFilterTerm] = useState("");
+
     useEffect(() => {
         // Fetch all reservations from the backend when the component mounts
         fetchReservations();
     }, []);
 
+    const today = new Date().toISOString().split('T')[0]; // Format as 'YYYY-MM-DD'
+
+    const filteredReservations = reservations.filter((reservation) => {
+        const isToday = new Date(reservation.date).toISOString().split('T')[0] === today;
+
+        return (
+            reservation.name.toLowerCase().includes(filterTerm.toLowerCase()) &&
+            (!filterToday || isToday)
+        );
+    });
+
     return (
         <>
+            <Form className="mb-3">
+                <Form.Group controlId="nameFilter">
+                    <Form.Control
+                        className="ms-1"
+                        style={{ maxWidth: '400px' }}
+                        type="text"
+                        placeholder="Nach Namen filtern"
+                        value={filterTerm}
+                        onChange={(e) => setFilterTerm(e.target.value)}
+                    />
+                </Form.Group>
+            </Form>
             <Table striped bordered hover variant="dark">
                 <thead>
                 <tr>
@@ -50,7 +75,7 @@ function ReservationTable() {
                 </tr>
                 </thead>
                 <tbody>
-                {reservations.map((reservation) => (
+                {filteredReservations.map((reservation) => (
                     <tr key={reservation.id}>
                         <td>{reservation.name}</td>
                         <td>
@@ -58,7 +83,7 @@ function ReservationTable() {
                         </td>
                         <td>{reservation.time}</td>
                         <td>{reservation.count}</td>
-                        <td>{reservation.contact}</td>
+                        <td>{reservation.contact ? reservation.contact : "-"}</td>
                     </tr>
                 ))}
                 </tbody>

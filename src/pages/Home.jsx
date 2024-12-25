@@ -4,7 +4,7 @@ function Home() {
     return (
         <>
             <h1>Heutige Reservierungen</h1>
-            <ReservationTable/>
+            <ReservationTable filterToday={true} />
         </>
     )
 }
