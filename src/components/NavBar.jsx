@@ -25,7 +25,7 @@ function NavBar() {
                 </div>
             </Navbar.Brand>
             <Nav className="ms-auto">
-            <CustomLink to="/">Heute</CustomLink>
+                <CustomLink to="/">Heute</CustomLink>
                 <CustomLink to="/all">Alle Reservierungen</CustomLink>
             </Nav>
         </Navbar>

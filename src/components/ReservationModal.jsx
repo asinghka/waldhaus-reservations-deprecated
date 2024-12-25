@@ -1,12 +1,14 @@
 import { useState } from 'react';
 import DatePicker from 'react-widgets/DatePicker';
+import TimeInput from "react-widgets/TimeInput";
+import NumberPicker from "react-widgets/NumberPicker";
 import { Modal, Button, Form } from 'react-bootstrap';
 
 const ReservationModal = ({ showModal, handleClose, saveReservation }) => {
     // State for form fields
     const [name, setName] = useState('');
     const [date, setDate] = useState(new Date());
-    const [time, setTime] = useState('');
+    const [time, setTime] = useState(new Date());
     const [count, setCount] = useState(2);
     const [contact, setContact] = useState('');
 
@@ -15,7 +17,7 @@ const ReservationModal = ({ showModal, handleClose, saveReservation }) => {
         saveReservation(reservation); // Call the save function passed as a prop
         setName('');
         setDate(new Date());
-        setTime('');
+        setTime(new Date());
         setCount(2);
         setContact('');
         handleClose(); // Close the modal after saving
@@ -47,19 +49,21 @@ const ReservationModal = ({ showModal, handleClose, saveReservation }) => {
                         />
                     </Form.Group>
                     <Form.Group controlId="formTime">
-                        <Form.Label>Uhrzeit</Form.Label>
-                        <Form.Control
-                            type="time"
+                        <Form.Label>Uhrzeit</Form.Label><br/>
+                        <TimeInput
+                            defaultValue={new Date()}
                             value={time}
-                            onChange={(e) => setTime(e.target.value)}
+                            onChange={(time) => setTime(time)}
                         />
                     </Form.Group>
                     <Form.Group controlId="formCount">
                         <Form.Label>Anzahl Personen</Form.Label>
-                        <Form.Control
-                            type="number"
+                        <NumberPicker
                             value={count}
-                            onChange={(e) => setCount(e.target.value)}
+                            precision={0}
+                            min={1}
+                            max={80}
+                            onChange={(count) => setCount(count)}
                         />
                     </Form.Group>
                     <Form.Group controlId="formContact">

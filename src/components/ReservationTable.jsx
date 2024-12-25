@@ -1,6 +1,7 @@
 import {Button, Form, Table} from "react-bootstrap";
 import ReservationModal from "./ReservationModal.jsx";
 import {useEffect, useState} from "react";
+import DatePicker from "react-widgets/DatePicker";
 
 function ReservationTable({filterToday}) {
     const saveReservation = (reservation) => {
@@ -31,22 +32,28 @@ function ReservationTable({filterToday}) {
     const [showModal, setShowModal] = useState(false);
     const handleShow = () => setShowModal(true);
     const handleClose = () => setShowModal(false);
+
     const [reservations, setReservations] = useState([]);
+
     const [filterTerm, setFilterTerm] = useState("");
+    const [filterDate, setFilterDate] = useState(new Date());
 
     useEffect(() => {
         // Fetch all reservations from the backend when the component mounts
         fetchReservations();
     }, []);
 
-    const today = new Date().toISOString().split('T')[0]; // Format as 'YYYY-MM-DD'
-
     const filteredReservations = reservations.filter((reservation) => {
-        const isToday = new Date(reservation.date).toISOString().split('T')[0] === today;
+        let isFilterDate;
+
+        if (!filterToday) {
+            isFilterDate = new Date(filterDate).toISOString().split('T')[0] === new Date(reservation.date).toISOString().split('T')[0];
+        } else {
+            isFilterDate = new Date().toISOString().split('T')[0] === new Date(reservation.date).toISOString().split('T')[0];
+        }
 
         return (
-            reservation.name.toLowerCase().includes(filterTerm.toLowerCase()) &&
-            (!filterToday || isToday)
+            reservation.name.toLowerCase().includes(filterTerm.toLowerCase()) && isFilterDate
         );
     });
 
@@ -57,7 +64,6 @@ function ReservationTable({filterToday}) {
                     <Form.Group controlId="nameFilter">
                         <Form.Control
                             className="ms-auto"
-                            size="lg"
                             style={{ minWidth: '300px' }}
                             type="text"
                             placeholder="Nach Namen filtern"
@@ -65,7 +71,21 @@ function ReservationTable({filterToday}) {
                             onChange={(e) => setFilterTerm(e.target.value)}
                         />
                     </Form.Group>
-                    <Button size="lg" className="ms-auto" onClick={handleShow}>Neue Reservierung</Button>
+
+                    { !filterToday && (
+                        <Form.Group controlId="dateFilter">
+                            <DatePicker
+                                className="flex ms-3"
+                                defaultValue={new Date()}
+                                value={filterDate}
+                                valueEditFormat={{ dateStyle: "short" }}
+                                valueDisplayFormat={{ dateStyle: "long" }}
+                                onChange={(date) => setFilterDate(date)}
+                            />
+                        </Form.Group>
+                    ) }
+
+                    <Button className="ms-auto" onClick={handleShow}>Neue Reservierung</Button>
                 </Form>
             </div>
             <Table striped bordered hover variant="">
@@ -75,7 +95,6 @@ function ReservationTable({filterToday}) {
                     <th>Datum</th>
                     <th>Uhrzeit</th>
                     <th>Anzahl</th>
-                    <th>Kontakt</th>
                 </tr>
                 </thead>
                 <tbody>
@@ -85,9 +104,10 @@ function ReservationTable({filterToday}) {
                         <td>
                             {new Date(reservation.date).toLocaleDateString('de-DE')}
                         </td>
-                        <td>{reservation.time}</td>
+                        <td>
+                            {new Date(reservation.time).toLocaleTimeString('de-DE', { hour: "2-digit", minute: "2-digit" })}
+                        </td>
                         <td>{reservation.count}</td>
-                        <td>{reservation.contact ? reservation.contact : "-"}</td>
                     </tr>
                 ))}
                 </tbody>
