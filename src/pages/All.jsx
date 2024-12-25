@@ -1,8 +1,11 @@
-import AllReservations from "../components/AllReservations.jsx";
+import ReservationTable from "../components/ReservationTable.jsx";
 
 function All() {
     return (
-        <AllReservations/>
+        <>
+            <h1>Alle Reservierungen</h1>
+            <ReservationTable/>
+        </>
     )
 }
 

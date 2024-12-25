@@ -2,7 +2,7 @@ import {Button, Table} from "react-bootstrap";
 import ReservationModal from "./ReservationModal.jsx";
 import {useEffect, useState} from "react";
 
-function TodayReservation() {
+function ReservationTable() {
     const saveReservation = (reservation) => {
         // Send POST request to backend to save reservation
         fetch('http://localhost:3001/reservations', {
@@ -37,13 +37,8 @@ function TodayReservation() {
         fetchReservations();
     }, []);
 
-    const today_reservations = reservations.filter(({ date }) => {
-        const today = new Date();
-        return new Date(date).toLocaleDateString() === today.toLocaleDateString();
-    });
     return (
         <>
-            <h1>Heutige Reservierungen</h1>
             <Table striped bordered hover variant="dark">
                 <thead>
                 <tr>
@@ -55,7 +50,7 @@ function TodayReservation() {
                 </tr>
                 </thead>
                 <tbody>
-                {today_reservations.map((reservation) => (
+                {reservations.map((reservation) => (
                     <tr key={reservation.id}>
                         <td>{reservation.name}</td>
                         <td>
@@ -74,4 +69,4 @@ function TodayReservation() {
     );
 }
 
-export default TodayReservation;
+export default ReservationTable;

@@ -1,8 +1,11 @@
-import TodayReservation from "../components/TodayReservation.jsx";
+import ReservationTable from "../components/ReservationTable.jsx";
 
 function Home() {
     return (
-        <TodayReservation/>
+        <>
+            <h1>Heutige Reservierungen</h1>
+            <ReservationTable/>
+        </>
     )
 }
 
