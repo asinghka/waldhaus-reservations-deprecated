@@ -8,7 +8,7 @@ app.use(express.json()); // Allows the server to handle JSON requests
 
 const db = new Database('./database.sqlite');
 
-// TODO: vorbestellung, anmerkungen
+// TODO: vorbestellung, anmerkungen, tischnummer
 db.prepare(`
     CREATE TABLE IF NOT EXISTS reservations (
         id INTEGER PRIMARY KEY AUTOINCREMENT,

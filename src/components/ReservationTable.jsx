@@ -53,9 +53,9 @@ function ReservationTable({filterToday}) {
         let isFilterDate;
 
         if (!filterToday) {
-            isFilterDate = new Date(filterDate).toISOString().split('T')[0] === new Date(reservation.date).toISOString().split('T')[0];
+            isFilterDate = new Date(filterDate).toLocaleDateString('de-DE').split('T')[0] === new Date(reservation.date).toLocaleDateString('de-DE').split('T')[0];
         } else {
-            isFilterDate = new Date().toISOString().split('T')[0] === new Date(reservation.date).toISOString().split('T')[0];
+            isFilterDate = new Date().toLocaleDateString('de-DE').split('T')[0] === new Date(reservation.date).toLocaleDateString('de-DE').split('T')[0];
         }
 
         return (

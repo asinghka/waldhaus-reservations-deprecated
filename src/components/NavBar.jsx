@@ -27,6 +27,7 @@ function NavBar() {
             <Nav className="ms-auto">
                 <CustomLink to="/">Heute</CustomLink>
                 <CustomLink to="/all">Alle Reservierungen</CustomLink>
+                // TODO: Überblick
             </Nav>
         </Navbar>
 
