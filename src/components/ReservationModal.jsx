@@ -48,7 +48,12 @@ const ReservationModal = ({ showModal, handleClose, saveReservation, initialRese
     return (
         <Modal centered show={showModal} onHide={handleClose}>
             <Modal.Header closeButton>
-                <Modal.Title>Neue Reservierung</Modal.Title>
+                {
+                    (initialReservations && <Modal.Title>Bestehende Reservierung</Modal.Title>)
+                    ||
+                    (!initialReservations && <Modal.Title>Neue Reservierung</Modal.Title>)
+                }
+
             </Modal.Header>
             <Modal.Body>
                 <Form>
@@ -102,18 +107,16 @@ const ReservationModal = ({ showModal, handleClose, saveReservation, initialRese
                 </Form>
             </Modal.Body>
             <Modal.Footer>
+                {
+                    ( initialReservations && edit && <Button className="me-auto" variant="danger">Löschen</Button>)
+                }
                 <Button variant="secondary" onClick={handleClose}>
                     Schließen
                 </Button>
                 {
-                    ( !edit &&
-                        <Button variant="warning" onClick={handleEdit}>
-                            Bearbeiten
-                        </Button> )
-                    || ( edit &&
-                        <Button variant="primary" onClick={handleSave}>
-                            Speichern
-                        </Button> )
+                    ( !edit && <Button variant="warning" onClick={handleEdit}>Bearbeiten</Button> )
+                    ||
+                    ( edit && <Button variant="primary" onClick={handleSave}>Speichern</Button> )
                 }
             </Modal.Footer>
         </Modal>
