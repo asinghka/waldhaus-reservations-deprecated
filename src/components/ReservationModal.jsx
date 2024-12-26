@@ -19,18 +19,24 @@ const ReservationModal = ({ showModal, handleClose, saveReservation, initialRese
             setTime(new Date(initialReservations.time));
             setCount(initialReservations.count);
             setContact(initialReservations.contact);
+        } else {
+            resetForm();
         }
     }, [initialReservations]);
 
-    const handleSave = () => {
-        const reservation = { name, date, time, count, contact };
-        saveReservation(reservation); // Call the save function passed as a prop
+    const resetForm = () => {
         setName('');
         setDate(new Date());
         setTime(new Date());
         setCount(2);
         setContact('');
-        handleClose(); // Close the modal after saving
+    };
+
+    const handleSave = () => {
+        const reservation = { name, date, time, count, contact };
+        saveReservation(reservation);
+        resetForm();
+        handleClose();
     };
 
     return (
