@@ -10,6 +10,7 @@ function CustomLink({ to, children, ...props }) {
     )
 }
 
+// TODO: Überblick
 function NavBar() {
     return (
         <Navbar defaultActiveKey="/">
@@ -27,7 +28,6 @@ function NavBar() {
             <Nav className="ms-auto">
                 <CustomLink to="/">Heute</CustomLink>
                 <CustomLink to="/all">Alle Reservierungen</CustomLink>
-                // TODO: Überblick
             </Nav>
         </Navbar>
 
