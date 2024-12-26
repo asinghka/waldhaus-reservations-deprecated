@@ -5,15 +5,16 @@ import NumberPicker from "react-widgets/NumberPicker";
 import { Modal, Button, Form } from 'react-bootstrap';
 
 const ReservationModal = ({ showModal, handleClose, saveReservation, initialReservations }) => {
-    // State for form fields
     const [name, setName] = useState('');
     const [date, setDate] = useState(new Date());
     const [time, setTime] = useState(new Date());
     const [count, setCount] = useState(2);
     const [contact, setContact] = useState('');
+    const [edit, setEdit] = useState(true);
 
     useEffect(() => {
         if (initialReservations) {
+            setEdit(false);
             setName(initialReservations.name);
             setDate(new Date(initialReservations.date));
             setTime(new Date(initialReservations.time));
@@ -30,6 +31,7 @@ const ReservationModal = ({ showModal, handleClose, saveReservation, initialRese
         setTime(new Date());
         setCount(2);
         setContact('');
+        setEdit(true);
     };
 
     const handleSave = () => {
@@ -38,6 +40,10 @@ const ReservationModal = ({ showModal, handleClose, saveReservation, initialRese
         resetForm();
         handleClose();
     };
+
+    const handleEdit = () => {
+        setEdit(true);
+    }
 
     return (
         <Modal centered show={showModal} onHide={handleClose}>
@@ -49,6 +55,7 @@ const ReservationModal = ({ showModal, handleClose, saveReservation, initialRese
                     <Form.Group controlId="formName">
                         <Form.Label>Name</Form.Label>
                         <Form.Control
+                            disabled={!edit}
                             type="text"
                             value={name}
                             onChange={(e) => setName(e.target.value)}
@@ -57,7 +64,7 @@ const ReservationModal = ({ showModal, handleClose, saveReservation, initialRese
                     <Form.Group controlId="formDate">
                         <Form.Label>Datum</Form.Label>
                         <DatePicker
-                            defaultValue={new Date()}
+                            disabled={!edit}
                             value={date}
                             valueEditFormat={{ dateStyle: "short" }}
                             valueDisplayFormat={{ dateStyle: "long" }}
@@ -67,7 +74,7 @@ const ReservationModal = ({ showModal, handleClose, saveReservation, initialRese
                     <Form.Group controlId="formTime">
                         <Form.Label>Uhrzeit</Form.Label><br/>
                         <TimeInput
-                            defaultValue={new Date()}
+                            disabled={!edit}
                             value={time}
                             onChange={(time) => setTime(time)}
                         />
@@ -75,6 +82,7 @@ const ReservationModal = ({ showModal, handleClose, saveReservation, initialRese
                     <Form.Group controlId="formCount">
                         <Form.Label>Anzahl Personen</Form.Label>
                         <NumberPicker
+                            disabled={!edit}
                             value={count}
                             precision={0}
                             min={1}
@@ -85,6 +93,7 @@ const ReservationModal = ({ showModal, handleClose, saveReservation, initialRese
                     <Form.Group controlId="formContact">
                         <Form.Label>Kontaktdaten</Form.Label>
                         <Form.Control
+                            disabled={!edit}
                             type="text"
                             value={contact}
                             onChange={(e) => setContact(e.target.value)}
@@ -96,9 +105,16 @@ const ReservationModal = ({ showModal, handleClose, saveReservation, initialRese
                 <Button variant="secondary" onClick={handleClose}>
                     Schließen
                 </Button>
-                <Button variant="primary" onClick={handleSave}>
-                    Speichern
-                </Button>
+                {
+                    ( !edit &&
+                        <Button variant="warning" onClick={handleEdit}>
+                            Bearbeiten
+                        </Button> )
+                    || ( edit &&
+                        <Button variant="primary" onClick={handleSave}>
+                            Speichern
+                        </Button> )
+                }
             </Modal.Footer>
         </Modal>
     );
