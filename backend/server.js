@@ -27,32 +27,32 @@ app.get('/reservations', (req, res) => {
 
 // POST route for saving reservation
 app.post('/reservations', (req, res) => {
-    const { id, name, date, count, contact, deleted } = req.body;
+    const { id, name, date, count, contact, notes, deleted } = req.body;
 
     let query
 
     if (id) {
         query = `
             UPDATE reservations
-            SET name = ?, date = ?, count = ?, contact = ?, deleted = ?
+            SET name = ?, date = ?, count = ?, contact = ?, notes = ?, deleted = ?
             WHERE id = ?;
         `;
 
         const stmt = db.prepare(query);
 
         try {
-            stmt.run(name, date, count, contact, deleted, id);
+            stmt.run(name, date, count, contact, notes, deleted, id);
             res.status(201).json({ message: 'Reservation updated successfully!' });
         } catch (err) {
             res.status(500).json({ message: 'Error updating reservation', error: err.message });
         }
     } else {
-        query = `INSERT INTO reservations (name, date, count, contact, deleted) VALUES (?, ?, ?, ?, ?)`;
+        query = `INSERT INTO reservations (name, date, count, contact, notes, deleted) VALUES (?, ?, ?, ?, ?, ?)`;
 
         const stmt = db.prepare(query);
 
         try {
-            stmt.run(name, date, count, contact, deleted);
+            stmt.run(name, date, count, contact, notes, deleted);
             res.status(201).json({ message: 'Reservation saved successfully!' });
         } catch (err) {
             res.status(500).json({ message: 'Error saving reservation', error: err.message });

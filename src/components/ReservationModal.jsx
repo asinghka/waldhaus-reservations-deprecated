@@ -3,7 +3,6 @@ import DatePicker from 'react-widgets/DatePicker';
 import TimeInput from "react-widgets/TimeInput";
 import NumberPicker from "react-widgets/NumberPicker";
 import { Modal, Button, Form } from 'react-bootstrap';
-import reservationTable from "./ReservationTable.jsx";
 
 const ReservationModal = ({ showModal, handleClose, saveReservation, initialReservations }) => {
     const [id, setId] = useState(null);
@@ -12,6 +11,7 @@ const ReservationModal = ({ showModal, handleClose, saveReservation, initialRese
     const [time, setTime] = useState(new Date());
     const [count, setCount] = useState(2);
     const [contact, setContact] = useState('');
+    const [notes, setNotes] = useState('');
     const [deleted, setDeleted] = useState(0);
 
     const [edit, setEdit] = useState(true);
@@ -25,6 +25,7 @@ const ReservationModal = ({ showModal, handleClose, saveReservation, initialRese
             setTime(new Date(initialReservations.date));
             setCount(initialReservations.count);
             setContact(initialReservations.contact);
+            setNotes(initialReservations.notes);
             setDeleted(initialReservations.deleted);
         } else {
             resetForm();
@@ -38,12 +39,13 @@ const ReservationModal = ({ showModal, handleClose, saveReservation, initialRese
         setTime(new Date());
         setCount(2);
         setContact('');
+        setNotes('');
         setEdit(true);
         setDeleted(0);
     };
 
     const handleSave = () => {
-        const reservation = { id, name, date, count, contact, deleted };
+        const reservation = { id, name, date, count, contact, notes, deleted };
         saveReservation(reservation);
         resetForm();
         handleClose();
@@ -54,7 +56,7 @@ const ReservationModal = ({ showModal, handleClose, saveReservation, initialRese
     }
 
     const handleDelete = () => {
-        const reservation = { id, name, date, count, contact, deleted: 1 };
+        const reservation = { id, name, date, count, contact, notes, deleted: 1 };
         saveReservation(reservation);
         resetForm();
         handleClose();
@@ -131,6 +133,17 @@ const ReservationModal = ({ showModal, handleClose, saveReservation, initialRese
                             type="text"
                             value={contact}
                             onChange={(e) => setContact(e.target.value)}
+                        />
+                    </Form.Group>
+                    <Form.Group controlId="formNotes">
+                        <Form.Label>Anmerkungen</Form.Label>
+                        <Form.Control
+                            as="textarea"
+                            rows={4}
+                            disabled={!edit}
+                            type="text"
+                            value={notes}
+                            onChange={(e) => setNotes(e.target.value)}
                         />
                     </Form.Group>
                 </Form>
