@@ -53,6 +53,9 @@ function ReservationTable({filterToday}) {
     }
 
     const filteredReservations = reservations.filter((reservation) => {
+        if (reservation.deleted)
+            return false;
+
         let isFilterDate;
 
         if (!filterToday) {

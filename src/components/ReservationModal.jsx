@@ -6,6 +6,7 @@ import { Modal, Button, Form } from 'react-bootstrap';
 import reservationTable from "./ReservationTable.jsx";
 
 const ReservationModal = ({ showModal, handleClose, saveReservation, initialReservations }) => {
+    const [id, setId] = useState(null);
     const [name, setName] = useState('');
     const [date, setDate] = useState(new Date());
     const [time, setTime] = useState(new Date());
@@ -18,6 +19,7 @@ const ReservationModal = ({ showModal, handleClose, saveReservation, initialRese
     useEffect(() => {
         if (initialReservations) {
             setEdit(false);
+            setId(initialReservations.id);
             setName(initialReservations.name);
             setDate(new Date(initialReservations.date));
             setTime(new Date(initialReservations.date));
@@ -30,6 +32,7 @@ const ReservationModal = ({ showModal, handleClose, saveReservation, initialRese
     }, [initialReservations]);
 
     const resetForm = () => {
+        setId(null);
         setName('');
         setDate(new Date());
         setTime(new Date());
@@ -40,7 +43,7 @@ const ReservationModal = ({ showModal, handleClose, saveReservation, initialRese
     };
 
     const handleSave = () => {
-        const reservation = { name, date, count, contact, deleted };
+        const reservation = { id, name, date, count, contact, deleted };
         saveReservation(reservation);
         resetForm();
         handleClose();
@@ -51,7 +54,7 @@ const ReservationModal = ({ showModal, handleClose, saveReservation, initialRese
     }
 
     const handleDelete = () => {
-        const reservation = { name, date, count, contact, deleted: 1 };
+        const reservation = { id, name, date, count, contact, deleted: 1 };
         saveReservation(reservation);
         resetForm();
         handleClose();
