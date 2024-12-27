@@ -51,7 +51,10 @@ const ReservationModal = ({ showModal, handleClose, saveReservation, initialRese
     }
 
     const handleDelete = () => {
-        setDeleted(1);
+        const reservation = { name, date, count, contact, deleted: 1 };
+        saveReservation(reservation);
+        resetForm();
+        handleClose();
     }
 
     return (
