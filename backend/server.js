@@ -13,10 +13,10 @@ db.prepare(`
     CREATE TABLE IF NOT EXISTS reservations (
         id INTEGER PRIMARY KEY AUTOINCREMENT,
         name TEXT,
-        date TEXT,
-        time TEXT,
+        date DATE,
         count INTEGER,
-        contact TEXT
+        contact TEXT,
+        deleted BOOLEAN DEFAULT FALSE
     )
 `).run();
 
@@ -27,13 +27,15 @@ app.get('/reservations', (req, res) => {
 
 // POST route for saving reservation
 app.post('/reservations', (req, res) => {
-    const { name, date, time, count, contact } = req.body;
+    const { name, date, count, contact, deleted } = req.body;
 
-    const query = `INSERT INTO reservations (name, date, time, count, contact) VALUES (?, ?, ?, ?, ?)`;
+    console.log(name, date, count, contact, deleted)
+
+    const query = `INSERT INTO reservations (name, date, count, contact, deleted) VALUES (?, ?, ?, ?, ?)`;
     const stmt = db.prepare(query);
 
     try {
-        stmt.run(name, date, time, count, contact);
+        stmt.run(name, date, count, contact, deleted);
         console.log('Reservation saved successfully.');
         res.status(201).json({ message: 'Reservation saved successfully!' });
     } catch (err) {

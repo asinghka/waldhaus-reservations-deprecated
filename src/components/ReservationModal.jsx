@@ -3,6 +3,7 @@ import DatePicker from 'react-widgets/DatePicker';
 import TimeInput from "react-widgets/TimeInput";
 import NumberPicker from "react-widgets/NumberPicker";
 import { Modal, Button, Form } from 'react-bootstrap';
+import reservationTable from "./ReservationTable.jsx";
 
 const ReservationModal = ({ showModal, handleClose, saveReservation, initialReservations }) => {
     const [name, setName] = useState('');
@@ -10,6 +11,8 @@ const ReservationModal = ({ showModal, handleClose, saveReservation, initialRese
     const [time, setTime] = useState(new Date());
     const [count, setCount] = useState(2);
     const [contact, setContact] = useState('');
+    const [deleted, setDeleted] = useState(0);
+
     const [edit, setEdit] = useState(true);
 
     useEffect(() => {
@@ -17,9 +20,10 @@ const ReservationModal = ({ showModal, handleClose, saveReservation, initialRese
             setEdit(false);
             setName(initialReservations.name);
             setDate(new Date(initialReservations.date));
-            setTime(new Date(initialReservations.time));
+            setTime(new Date(initialReservations.date));
             setCount(initialReservations.count);
             setContact(initialReservations.contact);
+            setDeleted(initialReservations.deleted);
         } else {
             resetForm();
         }
@@ -32,10 +36,11 @@ const ReservationModal = ({ showModal, handleClose, saveReservation, initialRese
         setCount(2);
         setContact('');
         setEdit(true);
+        setDeleted(0);
     };
 
     const handleSave = () => {
-        const reservation = { name, date, time, count, contact };
+        const reservation = { name, date, count, contact, deleted };
         saveReservation(reservation);
         resetForm();
         handleClose();
@@ -43,6 +48,10 @@ const ReservationModal = ({ showModal, handleClose, saveReservation, initialRese
 
     const handleEdit = () => {
         setEdit(true);
+    }
+
+    const handleDelete = () => {
+        setDeleted(1);
     }
 
     return (
@@ -60,6 +69,7 @@ const ReservationModal = ({ showModal, handleClose, saveReservation, initialRese
                     <Form.Group controlId="formName">
                         <Form.Label>Name</Form.Label>
                         <Form.Control
+                            autoFocus
                             disabled={!edit}
                             type="text"
                             value={name}
@@ -81,7 +91,20 @@ const ReservationModal = ({ showModal, handleClose, saveReservation, initialRese
                         <TimeInput
                             disabled={!edit}
                             value={time}
-                            onChange={(time) => setTime(time)}
+                            onChange={(time) => {
+                                setTime(time);
+
+                                const updatedDate = new Date(date);
+
+                                const hours = time.getHours();
+                                console.log(time);
+                                console.log(hours);
+                                const minutes = time.getMinutes();
+                                const seconds = time.getSeconds();
+
+                                updatedDate.setHours(hours, minutes, seconds, 0);
+                                setDate(updatedDate);
+                            }}
                         />
                     </Form.Group>
                     <Form.Group controlId="formCount">
@@ -108,7 +131,7 @@ const ReservationModal = ({ showModal, handleClose, saveReservation, initialRese
             </Modal.Body>
             <Modal.Footer>
                 {
-                    ( initialReservations && edit && <Button className="me-auto" variant="danger">Löschen</Button>)
+                    ( initialReservations && edit && <Button className="me-auto" variant="danger" onClick={handleDelete}>Löschen</Button>)
                 }
                 <Button variant="secondary" onClick={handleClose}>
                     Schließen

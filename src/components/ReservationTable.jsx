@@ -114,7 +114,7 @@ function ReservationTable({filterToday}) {
                             {new Date(reservation.date).toLocaleDateString('de-DE')}
                         </td>
                         <td>
-                            {new Date(reservation.time).toLocaleTimeString('de-DE', { hour: "2-digit", minute: "2-digit" })}
+                            {new Date(reservation.date).toLocaleTimeString('de-DE', { hour: "2-digit", minute: "2-digit" })}
                         </td>
                         <td>{reservation.count}</td>
                     </tr>
