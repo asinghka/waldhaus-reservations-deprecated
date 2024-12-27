@@ -13,8 +13,8 @@ function CustomLink({ to, children, ...props }) {
 // TODO: Überblick
 function NavBar() {
     return (
-        <Navbar defaultActiveKey="/">
-            <Navbar.Brand to="/" className="d-flex align-items-center">
+        <Navbar defaultActiveKey="/" bg="dark" data-bs-theme="dark" className="pt-3 pb-3">
+            <Navbar.Brand to="/" className="d-flex align-items-center ps-5">
                 <img
                     src="../assets/reservation_logo.png"
                     alt="Waldhaus 21 - Hundehütte"
@@ -25,7 +25,7 @@ function NavBar() {
                     <h4 style={{marginTop: '-15px'}}>Reservierungen</h4>
                 </div>
             </Navbar.Brand>
-            <Nav className="ms-auto">
+            <Nav className="ms-auto pe-5">
                 <CustomLink to="/">Heute</CustomLink>
                 <CustomLink to="/all">Alle Reservierungen</CustomLink>
             </Nav>
