@@ -5,6 +5,8 @@ import Localization from "react-widgets/Localization";
 import {DateLocalizer} from "react-widgets/IntlLocalizer";
 import {useLocation} from "react-router-dom";
 import ReservationTable from "./ReservationTable.jsx";
+import {LinearScale} from "chart.js";
+import LineChart from "./LineChart.jsx";
 
 
 function ReservationHeader({filterToday}) {
@@ -59,7 +61,10 @@ function ReservationHeader({filterToday}) {
 
     const handleShow = () => setShowModal(true);
 
-    const handleGraph = () => setGraph(!graph);
+    const handleGraph = () => {
+        setGraph(!graph);
+        setFilterTerm('');
+    }
 
     return (
         <>
@@ -68,6 +73,7 @@ function ReservationHeader({filterToday}) {
                     <Form.Group controlId="nameFilter">
                         <Form.Control
                             className="ms-auto"
+                            disabled={graph}
                             style={{ minWidth: '300px' }}
                             type="text"
                             placeholder="Nach Namen filtern"
@@ -76,25 +82,20 @@ function ReservationHeader({filterToday}) {
                         />
                     </Form.Group>
                     <Localization date={new DateLocalizer({culture: "de"})}>
-                        { !filterToday && (
-                            <Form.Group controlId="dateFilter">
-                                <DatePicker
-                                    className="flex ms-3"
-                                    defaultValue={new Date()}
-                                    value={filterDate}
-                                    valueEditFormat={{ dateStyle: "short" }}
-                                    valueDisplayFormat={{ dateStyle: "long" }}
-                                    onChange={(date) => setFilterDate(date)}
-                                />
-                            </Form.Group>
-                        ) }
+                        <Form.Group controlId="dateFilter">
+                            <DatePicker
+                                className="flex ms-3"
+                                defaultValue={new Date()}
+                                value={filterDate}
+                                disabled={filterToday}
+                                valueEditFormat={{ dateStyle: "short" }}
+                                valueDisplayFormat={{ dateStyle: "long" }}
+                                onChange={(date) => setFilterDate(date)}
+                            />
+                        </Form.Group>
                     </Localization>
-                    {
-                        filterToday && (
-                            <Form.Switch className="ms-5 mt-2" label="Graph Ansicht" onChange={handleGraph} />
-                        )
-                    }
-                    <Button className="ms-auto" onClick={handleShow}>Neue Reservierung</Button>
+                    <Form.Switch className="ms-5 mt-2" label="Graph Ansicht" onChange={handleGraph} />
+                    <Button className="ms-auto" disabled={graph} onClick={handleShow}>Neue Reservierung</Button>
                 </Form>
             </div>
             {
@@ -106,6 +107,11 @@ function ReservationHeader({filterToday}) {
                         showModal={showModal}
                         setShowModal={setShowModal}
                     />
+                )
+            }
+            {
+                graph && (
+                    <LineChart filterDate={filterDate} />
                 )
             }
         </>

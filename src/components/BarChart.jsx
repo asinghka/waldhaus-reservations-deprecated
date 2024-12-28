@@ -8,7 +8,7 @@ import {BarElement, CategoryScale, Chart as ChartJS, Legend, LinearScale, Title,
 
 ChartJS.register(CategoryScale, LinearScale, BarElement, Title, Tooltip, Legend);
 
-function Histogram() {
+function BarChart() {
     const germanMonths = [
         'Januar', 'Februar', 'März', 'April', 'Mai', 'Juni',
         'Juli', 'August', 'September', 'Oktober', 'November', 'Dezember'
@@ -57,7 +57,7 @@ function Histogram() {
                     data: values,
                     backgroundColor: "rgba(13, 110, 253, 1)",
                     borderColor: "rgba(0, 0, 0, 1)",
-                    borderWidth: 1
+                    borderWidth: 2
                 }
             ]
         };
@@ -116,4 +116,4 @@ function Histogram() {
     )
 }
 
-export default Histogram;
+export default BarChart;

@@ -1,9 +1,9 @@
-import Histogram from "../components/Histogram.jsx";
+import BarChart from "../components/BarChart.jsx";
 
 function Overview() {
     return (
         <div className="padding">
-            <Histogram/>
+            <BarChart/>
         </div>
     )
 }
