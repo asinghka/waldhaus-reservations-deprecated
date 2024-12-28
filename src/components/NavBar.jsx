@@ -10,7 +10,6 @@ function CustomLink({ to, children, ...props }) {
     )
 }
 
-// TODO: Überblick
 function NavBar() {
     return (
         <Navbar defaultActiveKey="/" bg="dark" data-bs-theme="dark" className="pt-3 pb-3">
