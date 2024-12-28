@@ -4,29 +4,23 @@ import {useEffect, useState} from "react";
 import DatePicker from "react-widgets/DatePicker";
 
 function ReservationTable({filterToday}) {
-    const saveReservation = (reservation) => {
-        // Send POST request to backend to save reservation
-        fetch('http://localhost:3001/reservations', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-            },
-            body: JSON.stringify(reservation), // Send reservation data as JSON
-        })
-            .then((response) => response.json())
-            .then((data) => {
-                console.log('Reservation saved:', data);
-                // Optionally, refresh the reservation list after saving
-                fetchReservations();
-            })
-            .catch((error) => console.error('Error saving reservation:', error));
+    const saveReservation = async (reservation) => {
+        try {
+            await window.electron.saveReservations(reservation);
+            console.log('Reservation saved');
+            await fetchReservations();
+        } catch (error) {
+            console.error('Error saving reservation:', error);
+        }
     };
 
-    const fetchReservations = () => {
-        fetch('http://localhost:3001/reservations')
-            .then((response) => response.json())
-            .then((data) => setReservations(data))
-            .catch((error) => console.error('Error fetching reservations:', error));
+    const fetchReservations = async () => {
+        try {
+            const reservations = await window.electron.getReservations();
+            setReservations(reservations);
+        } catch (error) {
+            console.error('Error fetching reservations:', error);
+        }
     };
 
     const [showModal, setShowModal] = useState(false);
@@ -34,6 +28,7 @@ function ReservationTable({filterToday}) {
     const handleClose = () => {
         setSelectedReservation(null)
         setShowModal(false);
+        fetchReservations();
     };
 
     const [reservations, setReservations] = useState([]);

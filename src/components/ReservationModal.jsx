@@ -44,9 +44,9 @@ const ReservationModal = ({ showModal, handleClose, saveReservation, initialRese
         setDeleted(0);
     };
 
-    const handleSave = () => {
+    const handleSave = async () => {
         const reservation = { id, name, date, count, contact, notes, deleted };
-        saveReservation(reservation);
+        await window.electron.saveReservation(reservation);
         resetForm();
         handleClose();
     };
@@ -55,9 +55,9 @@ const ReservationModal = ({ showModal, handleClose, saveReservation, initialRese
         setEdit(true);
     }
 
-    const handleDelete = () => {
+    const handleDelete = async () => {
         const reservation = { id, name, date, count, contact, notes, deleted: 1 };
-        saveReservation(reservation);
+        await window.electron.saveReservation(reservation);
         resetForm();
         handleClose();
     }
@@ -105,8 +105,6 @@ const ReservationModal = ({ showModal, handleClose, saveReservation, initialRese
                                 const updatedDate = new Date(date);
 
                                 const hours = time.getHours();
-                                console.log(time);
-                                console.log(hours);
                                 const minutes = time.getMinutes();
                                 const seconds = time.getSeconds();
 
