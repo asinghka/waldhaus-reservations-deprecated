@@ -53,7 +53,7 @@ function Histogram() {
             labels: Array.from({ length: 31 }, (_, i) => (i + 1).toString() + "." + (selectedMonth+1).toString()),
             datasets: [
                 {
-                    label: "Reservierungen pro Tag",
+                    label: "Reservierungen",
                     data: values,
                     backgroundColor: "rgba(13, 110, 253, 1)",
                     borderColor: "rgba(0, 0, 0, 1)",
