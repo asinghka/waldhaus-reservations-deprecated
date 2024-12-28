@@ -1,7 +1,6 @@
 import Nav from 'react-bootstrap/Nav';
 import Navbar from 'react-bootstrap/Navbar';
 import {NavLink} from 'react-router-dom';
-import {useEffect, useState} from "react";
 
 function CustomLink({ to, children, ...props }) {
     return (
@@ -28,6 +27,7 @@ function NavBar() {
             <Nav className="ms-auto pe-5">
                 <CustomLink to="/">Heute</CustomLink>
                 <CustomLink to="/all">Alle Reservierungen</CustomLink>
+                <CustomLink to="/overview">Überblick</CustomLink>
             </Nav>
         </Navbar>
 

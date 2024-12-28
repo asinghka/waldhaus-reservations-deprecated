@@ -5,6 +5,7 @@ import Home from "./pages/Home.jsx";
 import All from "./pages/All.jsx";
 
 import { Route, Routes} from "react-router-dom";
+import Overview from "./pages/Overview.jsx";
 
 function App() {
 
@@ -14,6 +15,7 @@ function App() {
             <Routes>
                 <Route path="/" element={<Home/>}/>
                 <Route path="/all" element={<All/>}/>
+                <Route path="/overview" element={<Overview/>}/>
             </Routes>
         </div>
     );
