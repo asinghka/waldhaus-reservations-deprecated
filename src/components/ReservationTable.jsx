@@ -2,6 +2,9 @@ import {Button, Form, Table} from "react-bootstrap";
 import ReservationModal from "./ReservationModal.jsx";
 import {useEffect, useState} from "react";
 import DatePicker from "react-widgets/DatePicker";
+import Localization from "react-widgets/Localization";
+import {DateLocalizer} from "react-widgets/IntlLocalizer";
+
 
 function ReservationTable({filterToday}) {
     const saveReservation = async (reservation) => {
@@ -77,20 +80,20 @@ function ReservationTable({filterToday}) {
                             onChange={(e) => setFilterTerm(e.target.value)}
                         />
                     </Form.Group>
-
-                    { !filterToday && (
-                        <Form.Group controlId="dateFilter">
-                            <DatePicker
-                                className="flex ms-3"
-                                defaultValue={new Date()}
-                                value={filterDate}
-                                valueEditFormat={{ dateStyle: "short" }}
-                                valueDisplayFormat={{ dateStyle: "long" }}
-                                onChange={(date) => setFilterDate(date)}
-                            />
-                        </Form.Group>
-                    ) }
-
+                    <Localization date={new DateLocalizer({culture: "de"})}>
+                        { !filterToday && (
+                            <Form.Group controlId="dateFilter">
+                                <DatePicker
+                                    className="flex ms-3"
+                                    defaultValue={new Date()}
+                                    value={filterDate}
+                                    valueEditFormat={{ dateStyle: "short" }}
+                                    valueDisplayFormat={{ dateStyle: "long" }}
+                                    onChange={(date) => setFilterDate(date)}
+                                />
+                            </Form.Group>
+                        ) }
+                    </Localization>
                     <Button className="ms-auto" onClick={handleShow}>Neue Reservierung</Button>
                 </Form>
             </div>

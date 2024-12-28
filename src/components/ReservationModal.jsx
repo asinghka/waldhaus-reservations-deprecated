@@ -7,12 +7,6 @@ import Localization from "react-widgets/Localization";
 import {DateLocalizer} from "react-widgets/IntlLocalizer";
 
 const ReservationModal = ({ showModal, handleClose, saveReservation, initialReservations }) => {
-    const locale = {
-        label: "German",
-        culture: "de",
-        firstOfWeek: 0,
-    };
-
     const [id, setId] = useState(null);
     const [name, setName] = useState('');
     const [date, setDate] = useState(new Date());
@@ -81,7 +75,7 @@ const ReservationModal = ({ showModal, handleClose, saveReservation, initialRese
 
             </Modal.Header>
             <Modal.Body>
-                <Localization date={new DateLocalizer(locale)}>
+                <Localization date={new DateLocalizer({culture: "de"})}>
                     <Form>
                         <Form.Group controlId="formName">
                             <Form.Label>Name</Form.Label>
