@@ -20,6 +20,7 @@ function ReservationHeader({filterToday}) {
     const [filterTerm, setFilterTerm] = useState("");
     const [filterDate, setFilterDate] = useState(null);
 
+    const [graph, setGraph] = useState(false);
     const [showModal, setShowModal] = useState(false);
 
     useEffect(() => {
@@ -58,6 +59,8 @@ function ReservationHeader({filterToday}) {
 
     const handleShow = () => setShowModal(true);
 
+    const handleGraph = () => setGraph(!graph);
+
     return (
         <>
             <div>
@@ -88,21 +91,23 @@ function ReservationHeader({filterToday}) {
                     </Localization>
                     {
                         filterToday && (
-                            <Form.Switch className="ms-5 mt-2" label="Graph Ansicht"/>
+                            <Form.Switch className="ms-5 mt-2" label="Graph Ansicht" onChange={handleGraph} />
                         )
                     }
                     <Button className="ms-auto" onClick={handleShow}>Neue Reservierung</Button>
                 </Form>
             </div>
-            <ReservationTable
-                fetchReservations={fetchReservations}
-                reservations={filteredReservations}
-                filterToday={filterToday}
-                filterDate={filterDate}
-                filterTerm={filterTerm}
-                showModal={showModal}
-                setShowModal={setShowModal}
-            />
+            {
+                !graph && (
+                    <ReservationTable
+                        fetchReservations={fetchReservations}
+                        reservations={filteredReservations}
+                        filterDate={filterDate}
+                        showModal={showModal}
+                        setShowModal={setShowModal}
+                    />
+                )
+            }
         </>
     );
 }

@@ -6,7 +6,7 @@ import {Modal, Button, Form, Alert} from 'react-bootstrap';
 import Localization from "react-widgets/Localization";
 import {DateLocalizer} from "react-widgets/IntlLocalizer";
 
-const ReservationModal = ({ showModal, handleClose, saveReservation, initialReservations, initialDate }) => {
+const ReservationModal = ({ showModal, handleClose, initialReservations, initialDate }) => {
 
     const defaultTime = new Date();
     defaultTime.setHours(18, 0, 0, 0);
@@ -84,12 +84,8 @@ const ReservationModal = ({ showModal, handleClose, saveReservation, initialRese
     return (
         <Modal centered show={showModal} onHide={handleClose}>
             <Modal.Header closeButton>
-                {
-                    (initialReservations && <Modal.Title>Bestehende Reservierung</Modal.Title>)
-                    ||
-                    (!initialReservations && <Modal.Title>Neue Reservierung</Modal.Title>)
-                }
-
+                {(initialReservations && <Modal.Title>Bestehende Reservierung</Modal.Title>)}
+                {(!initialReservations && <Modal.Title>Neue Reservierung</Modal.Title>)}
             </Modal.Header>
             <Modal.Body>
                 {!valid && <Alert variant="danger">Es fehlen notwendige Informationen!</Alert>}

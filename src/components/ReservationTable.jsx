@@ -2,19 +2,9 @@ import {Table} from "react-bootstrap";
 import {useState} from "react";
 import ReservationModal from "./ReservationModal.jsx";
 
-function ReservationTable({fetchReservations, reservations, filterToday, filterDate, filterTerm, showModal, setShowModal}) {
+function ReservationTable({fetchReservations, reservations, filterDate, showModal, setShowModal}) {
 
     const [selectedReservation, setSelectedReservation] = useState(null);
-
-    const saveReservation = async (reservation) => {
-        try {
-            await window.electron.saveReservations(reservation);
-            console.log('Reservation saved');
-            await fetchReservations();
-        } catch (error) {
-            console.error('Error saving reservation:', error);
-        }
-    };
 
     const handleClose = () => {
         setSelectedReservation(null);
@@ -56,7 +46,6 @@ function ReservationTable({fetchReservations, reservations, filterToday, filterD
             <ReservationModal
                 showModal={showModal}
                 handleClose={handleClose}
-                saveReservation={saveReservation}
                 initialDate={filterDate}
                 initialReservations={selectedReservation}
             />
