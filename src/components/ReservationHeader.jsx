@@ -5,11 +5,10 @@ import Localization from "react-widgets/Localization";
 import {DateLocalizer} from "react-widgets/IntlLocalizer";
 import {useLocation} from "react-router-dom";
 import ReservationTable from "./ReservationTable.jsx";
-import {LinearScale} from "chart.js";
 import LineChart from "./LineChart.jsx";
 
 
-function ReservationHeader({filterToday}) {
+function ReservationHeader({filterToday = false}) {
     const location = useLocation();
     const params = new URLSearchParams(location.search);
 
@@ -95,7 +94,7 @@ function ReservationHeader({filterToday}) {
                         </Form.Group>
                     </Localization>
                     <Form.Switch className="ms-5 mt-2" label="Graph Ansicht" onChange={handleGraph} />
-                    <Button className="ms-auto" disabled={graph} onClick={handleShow}>Neue Reservierung</Button>
+                    <Button variant={graph ? "secondary" : "primary"} className="ms-auto" disabled={graph} onClick={handleShow}>Neue Reservierung</Button>
                 </Form>
             </div>
             {

@@ -13,7 +13,7 @@ import {
 
 ChartJS.register(CategoryScale, LinearScale, PointElement, LineElement, Title, Tooltip, Legend);
 
-function LineChart({filterDate}) {
+function LineChart({filterDate = new Date()}) {
     const [reservations, setReservations] = useState([]);
 
     const fetchReservations = async () => {

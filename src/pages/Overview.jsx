@@ -1,9 +1,9 @@
-import BarChart from "../components/BarChart.jsx";
+import OverviewHeader from "../components/OverviewHeader.jsx";
 
 function Overview() {
     return (
         <div className="padding">
-            <BarChart/>
+            <OverviewHeader />
         </div>
     )
 }

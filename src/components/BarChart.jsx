@@ -1,23 +1,12 @@
 import {useEffect, useState} from "react";
 import {Bar} from "react-chartjs-2"
-import DatePicker from "react-widgets/DatePicker";
-import Localization from "react-widgets/Localization";
-import {DateLocalizer} from "react-widgets/IntlLocalizer";
 import {useNavigate} from "react-router-dom";
 import {BarElement, CategoryScale, Chart as ChartJS, Legend, LinearScale, Title, Tooltip} from "chart.js";
 
 ChartJS.register(CategoryScale, LinearScale, BarElement, Title, Tooltip, Legend);
 
-function BarChart() {
-    const germanMonths = [
-        'Januar', 'Februar', 'März', 'April', 'Mai', 'Juni',
-        'Juli', 'August', 'September', 'Oktober', 'November', 'Dezember'
-    ];
-
+function BarChart({filterDate = new Date()}) {
     const [reservations, setReservations] = useState([]);
-    const [date, setDate] = useState(new Date());
-    const [selectedMonth, setSelectedMonth] = useState(new Date().getMonth());
-    const [selectedYear, setSelectedYear] = useState(new Date().getFullYear());
 
     const fetchReservations = async () => {
         try {
@@ -38,7 +27,7 @@ function BarChart() {
 
         const reservationDate = new Date(reservation.date);
 
-        return reservationDate.getMonth() === selectedMonth && reservationDate.getFullYear() === selectedYear;
+        return reservationDate.getMonth() === filterDate.getMonth() && reservationDate.getFullYear() === filterDate.getFullYear();
     })
 
     const generateChartData = (filteredReservations) => {
@@ -50,7 +39,7 @@ function BarChart() {
         }
 
         const chartData = {
-            labels: Array.from({ length: 31 }, (_, i) => (i + 1).toString() + "." + (selectedMonth+1).toString()),
+            labels: Array.from({ length: 31 }, (_, i) => (i + 1).toString() + "." + (filterDate.getMonth()+1).toString()),
             datasets: [
                 {
                     label: "Reservierungen",
@@ -91,28 +80,13 @@ function BarChart() {
         onClick: (event, elements) => {
             if (elements.length > 0) {
                 const index = elements[0].index;
-                navigate(`/all?year=${selectedYear}&month=${selectedMonth + 1}&day=${index + 1}`);
+                navigate(`/all?year=${filterDate.getFullYear()}&month=${filterDate.getMonth() + 1}&day=${index + 1}`);
             }
         }
     };
 
-
     return (
         <>
-            <h2>Überblick für den Monat {germanMonths[selectedMonth] + " " + selectedYear.toString()}</h2>
-            <Localization date={new DateLocalizer({culture: "de"})}>
-                <DatePicker
-                    style={{ width: "250px" }}
-                    value={date}
-                    valueFormat={{ month: "long", year: "numeric" }}
-                    calendarProps={{ views: ["year", "decade", "century"] }}
-                    onChange={(date) => {
-                        setDate(date);
-                        setSelectedMonth(date.getMonth());
-                        setSelectedYear(date.getFullYear());
-                    }}
-                />
-            </Localization>
             <Bar data={chartData} options={options} height={100} />
         </>
     )
