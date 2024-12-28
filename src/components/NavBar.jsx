@@ -27,6 +27,7 @@ function NavBar() {
                 <CustomLink to="/">Heute</CustomLink>
                 <CustomLink to="/all">Reservierungen</CustomLink>
                 <CustomLink to="/overview">Überblick</CustomLink>
+                <CustomLink to="/admin">Admin</CustomLink>
             </Nav>
         </Navbar>
 

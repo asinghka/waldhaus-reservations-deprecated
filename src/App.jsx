@@ -6,6 +6,7 @@ import All from "./pages/All.jsx";
 
 import { Route, Routes} from "react-router-dom";
 import Overview from "./pages/Overview.jsx";
+import Admin from "./pages/Admin.jsx";
 
 function App() {
 
@@ -16,6 +17,7 @@ function App() {
                 <Route path="/" element={<Home/>}/>
                 <Route path="/all" element={<All/>}/>
                 <Route path="/overview" element={<Overview/>}/>
+                <Route path="/admin" element={<Admin/>}/>
             </Routes>
         </div>
     );

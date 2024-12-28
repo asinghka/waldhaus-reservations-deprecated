@@ -6,7 +6,7 @@ import {Modal, Button, Form, Alert} from 'react-bootstrap';
 import Localization from "react-widgets/Localization";
 import {DateLocalizer} from "react-widgets/IntlLocalizer";
 
-const ReservationModal = ({ showModal, handleClose, initialReservations, initialDate }) => {
+const ReservationModal = ({ showModal, handleClose, initialReservations, initialDate, admin = false }) => {
 
     const defaultTime = new Date();
     defaultTime.setHours(18, 0, 0, 0);
@@ -80,6 +80,13 @@ const ReservationModal = ({ showModal, handleClose, initialReservations, initial
         resetForm();
         handleClose();
     };
+
+    const handleRestore = async () => {
+        const reservation = { id, name, date, count, contact, notes, deleted: 0 };
+        await window.electron.saveReservation(reservation);
+        resetForm();
+        handleClose();
+    }
 
     return (
         <Modal centered show={showModal} onHide={handleClose}>
@@ -155,12 +162,13 @@ const ReservationModal = ({ showModal, handleClose, initialReservations, initial
                 </Localization>
             </Modal.Body>
             <Modal.Footer>
-                {( initialReservations && edit && <Button className="me-auto" variant="danger" onClick={handleDelete}>Löschen</Button>)}
+                {( !admin && initialReservations && edit && <Button className="me-auto" variant="danger" onClick={handleDelete}>Löschen</Button>)}
                 <Button variant="secondary" onClick={handleClose}>
                     Schließen
                 </Button>
                 {( !edit && <Button variant="warning" onClick={handleEdit}>Bearbeiten</Button> )}
-                {( edit && <Button variant="primary" onClick={handleSave}>Speichern</Button> )}
+                {( !admin && edit && <Button variant="primary" onClick={handleSave}>Speichern</Button> )}
+                {( admin && initialReservations && edit && <Button variant="success" onClick={handleRestore}>Wiederherstellen</Button>)}
             </Modal.Footer>
         </Modal>
     );

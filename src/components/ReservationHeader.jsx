@@ -8,7 +8,7 @@ import ReservationTable from "./ReservationTable.jsx";
 import LineChart from "./LineChart.jsx";
 
 
-function ReservationHeader({filterToday = false}) {
+function ReservationHeader({filterToday = false, admin = false}) {
     const location = useLocation();
     const params = new URLSearchParams(location.search);
 
@@ -43,7 +43,11 @@ function ReservationHeader({filterToday = false}) {
     };
 
     const filteredReservations = reservations.filter((reservation) => {
-        if (reservation.deleted) return false;
+        if (admin) {
+            if (!reservation.deleted) return false
+        } else {
+            if (reservation.deleted) return false;
+        }
 
         let isFilterDate;
 
@@ -93,8 +97,8 @@ function ReservationHeader({filterToday = false}) {
                             />
                         </Form.Group>
                     </Localization>
-                    <Form.Switch className="ms-5 mt-2" label="Graph Ansicht" onChange={handleGraph} />
-                    <Button variant={graphView ? "secondary" : "primary"} className="ms-auto" disabled={graphView} onClick={handleShow}>Neue Reservierung</Button>
+                    <Form.Switch disabled={admin} className="ms-5 mt-2" label="Graph Ansicht" onChange={handleGraph} />
+                    <Button variant={graphView || admin ? "secondary" : "primary"} className="ms-auto" disabled={graphView || admin} onClick={handleShow}>Neue Reservierung</Button>
                 </Form>
             </div>
             {
@@ -105,6 +109,7 @@ function ReservationHeader({filterToday = false}) {
                         filterDate={filterDate}
                         showModal={showModal}
                         setShowModal={setShowModal}
+                        admin={admin}
                     />
                 )
             }

@@ -2,7 +2,7 @@ import {Table} from "react-bootstrap";
 import {useState} from "react";
 import ReservationModal from "./ReservationModal.jsx";
 
-function ReservationTable({fetchReservations, reservations, filterDate, showModal, setShowModal}) {
+function ReservationTable({fetchReservations, reservations, filterDate, showModal, setShowModal, admin = false}) {
 
     const [selectedReservation, setSelectedReservation] = useState(null);
 
@@ -48,6 +48,7 @@ function ReservationTable({fetchReservations, reservations, filterDate, showModa
                 handleClose={handleClose}
                 initialDate={filterDate}
                 initialReservations={selectedReservation}
+                admin={admin}
             />
         </>
     );

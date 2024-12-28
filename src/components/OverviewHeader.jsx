@@ -28,15 +28,24 @@ function OverviewHeader() {
             </h2>
             <Form className="d-flex">
                 <Localization date={new DateLocalizer({culture: "de"})}>
-                    <DatePicker
+                    {yearView && <DatePicker
                         style={{ width: "250px" }}
                         value={filterDate}
-                        valueFormat={!yearView && { month: "long", year: "numeric" } || yearView && { year: "numeric" }}
-                        calendarProps={!yearView && { views: ["year", "decade", "century"] } || yearView && { views: ["decade", "century"] }}
+                        valueFormat={yearView && { year: "numeric" }}
+                        calendarProps={yearView && { views: ["decade", "century"] }}
                         onChange={(date) => {
                             setFilterDate(date);
                         }}
-                    />
+                    />}
+                    {!yearView && <DatePicker
+                        style={{ width: "250px" }}
+                        value={filterDate}
+                        valueFormat={{ month: "long", year: "numeric" }}
+                        calendarProps={{ views: ["year", "decade", "century"] }}
+                        onChange={(date) => {
+                            setFilterDate(date);
+                        }}
+                    />}
                 </Localization>
                 <Form.Switch className="ms-5 mt-2" label="Jahresansicht" onChange={handleYearView} />
             </Form>
