@@ -28,7 +28,8 @@ function ReservationTable({filterToday}) {
     const fetchReservations = async () => {
         try {
             const reservations = await window.electron.getReservations();
-            setReservations(reservations);
+            const sortedReservations = reservations.sort((a, b) => new Date(a.date).getTime() - new Date(b.date).getTime());
+            setReservations(sortedReservations);
         } catch (error) {
             console.error('Error fetching reservations:', error);
         }
