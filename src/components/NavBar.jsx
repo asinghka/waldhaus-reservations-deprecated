@@ -23,7 +23,7 @@ function NavBar() {
                     <h4 style={{marginTop: '-15px', marginLeft: '10px'}}>Reservierungen</h4>
                 </div>
             </Navbar.Brand>
-            <Nav className="ms-auto pe-5">
+            <Nav variant="underline" className="ms-auto pe-5">
                 <CustomLink to="/">Heute</CustomLink>
                 <CustomLink to="/all">Alle Reservierungen</CustomLink>
                 <CustomLink to="/overview">Überblick</CustomLink>
