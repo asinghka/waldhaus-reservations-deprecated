@@ -1,10 +1,15 @@
-import { app, BrowserWindow, ipcMain } from 'electron'
+import {app, BrowserWindow, ipcMain} from 'electron'
 import path from 'path'
-import { fileURLToPath } from 'url'
+import {fileURLToPath} from 'url'
 import Database from 'better-sqlite3'
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url))
-const db = new Database('./database.sqlite')
+
+// Get the path to the user data directory
+const userDataPath = app.getPath('userData');
+const dbPath = path.join(userDataPath, 'database.sqlite');
+
+const db = new Database(dbPath);
 
 db.prepare(`
     CREATE TABLE IF NOT EXISTS reservations (

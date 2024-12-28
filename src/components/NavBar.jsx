@@ -1,6 +1,7 @@
 import Nav from 'react-bootstrap/Nav';
 import Navbar from 'react-bootstrap/Navbar';
 import {NavLink} from 'react-router-dom';
+import {useEffect, useState} from "react";
 
 function CustomLink({ to, children, ...props }) {
     return (
@@ -16,8 +17,7 @@ function NavBar() {
         <Navbar defaultActiveKey="/" bg="dark" data-bs-theme="dark" className="pt-3 pb-3">
             <Navbar.Brand to="/" className="d-flex align-items-center ps-5">
                 <img
-                    src="../assets/reservation_logo.png"
-                    alt="Waldhaus 21 - Hundehütte"
+                    src="assets/logo.png"
                     style={{height: '70px'}}
                 />
                 <div style={{textAlign: 'left'}}>

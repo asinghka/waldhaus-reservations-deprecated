@@ -38,7 +38,6 @@ function ReservationTable({filterToday}) {
     const [filterDate, setFilterDate] = useState(new Date());
 
     useEffect(() => {
-        // Fetch all reservations from the backend when the component mounts
         fetchReservations();
     }, []);
 
