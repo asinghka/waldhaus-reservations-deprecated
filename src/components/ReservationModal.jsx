@@ -3,8 +3,16 @@ import DatePicker from 'react-widgets/DatePicker';
 import TimeInput from "react-widgets/TimeInput";
 import NumberPicker from "react-widgets/NumberPicker";
 import { Modal, Button, Form } from 'react-bootstrap';
+import Localization from "react-widgets/Localization";
+import {DateLocalizer} from "react-widgets/IntlLocalizer";
 
 const ReservationModal = ({ showModal, handleClose, saveReservation, initialReservations }) => {
+    const locale = {
+        label: "German",
+        culture: "de",
+        firstOfWeek: 0,
+    };
+
     const [id, setId] = useState(null);
     const [name, setName] = useState('');
     const [date, setDate] = useState(new Date());
@@ -73,78 +81,80 @@ const ReservationModal = ({ showModal, handleClose, saveReservation, initialRese
 
             </Modal.Header>
             <Modal.Body>
-                <Form>
-                    <Form.Group controlId="formName">
-                        <Form.Label>Name</Form.Label>
-                        <Form.Control
-                            autoFocus
-                            disabled={!edit}
-                            type="text"
-                            value={name}
-                            onChange={(e) => setName(e.target.value)}
-                        />
-                    </Form.Group>
-                    <Form.Group controlId="formDate">
-                        <Form.Label>Datum</Form.Label>
-                        <DatePicker
-                            disabled={!edit}
-                            value={date}
-                            valueEditFormat={{ dateStyle: "short" }}
-                            valueDisplayFormat={{ dateStyle: "long" }}
-                            onChange={(date) => setDate(date)}
-                        />
-                    </Form.Group>
-                    <Form.Group controlId="formTime">
-                        <Form.Label>Uhrzeit</Form.Label><br/>
-                        <TimeInput
-                            disabled={!edit}
-                            value={time}
-                            onChange={(time) => {
-                                setTime(time);
+                <Localization date={new DateLocalizer(locale)}>
+                    <Form>
+                        <Form.Group controlId="formName">
+                            <Form.Label>Name</Form.Label>
+                            <Form.Control
+                                autoFocus
+                                disabled={!edit}
+                                type="text"
+                                value={name}
+                                onChange={(e) => setName(e.target.value)}
+                            />
+                        </Form.Group>
+                        <Form.Group controlId="formDate">
+                            <Form.Label>Datum</Form.Label>
+                            <DatePicker
+                                disabled={!edit}
+                                value={date}
+                                valueEditFormat={{ dateStyle: "short" }}
+                                valueDisplayFormat={{ dateStyle: "long" }}
+                                onChange={(date) => setDate(date)}
+                            />
+                        </Form.Group>
+                        <Form.Group controlId="formTime">
+                            <Form.Label>Uhrzeit</Form.Label><br/>
+                            <TimeInput
+                                disabled={!edit}
+                                value={time}
+                                onChange={(time) => {
+                                    setTime(time);
 
-                                const updatedDate = new Date(date);
+                                    const updatedDate = new Date(date);
 
-                                const hours = time.getHours();
-                                const minutes = time.getMinutes();
-                                const seconds = time.getSeconds();
+                                    const hours = time.getHours();
+                                    const minutes = time.getMinutes();
+                                    const seconds = time.getSeconds();
 
-                                updatedDate.setHours(hours, minutes, seconds, 0);
-                                setDate(updatedDate);
-                            }}
-                        />
-                    </Form.Group>
-                    <Form.Group controlId="formCount">
-                        <Form.Label>Anzahl Personen</Form.Label>
-                        <NumberPicker
-                            disabled={!edit}
-                            value={count}
-                            precision={0}
-                            min={1}
-                            max={80}
-                            onChange={(count) => setCount(count)}
-                        />
-                    </Form.Group>
-                    <Form.Group controlId="formContact">
-                        <Form.Label>Kontaktdaten</Form.Label>
-                        <Form.Control
-                            disabled={!edit}
-                            type="text"
-                            value={contact}
-                            onChange={(e) => setContact(e.target.value)}
-                        />
-                    </Form.Group>
-                    <Form.Group controlId="formNotes">
-                        <Form.Label>Anmerkungen</Form.Label>
-                        <Form.Control
-                            as="textarea"
-                            rows={4}
-                            disabled={!edit}
-                            type="text"
-                            value={notes}
-                            onChange={(e) => setNotes(e.target.value)}
-                        />
-                    </Form.Group>
-                </Form>
+                                    updatedDate.setHours(hours, minutes, seconds, 0);
+                                    setDate(updatedDate);
+                                }}
+                            />
+                        </Form.Group>
+                        <Form.Group controlId="formCount">
+                            <Form.Label>Anzahl Personen</Form.Label>
+                            <NumberPicker
+                                disabled={!edit}
+                                value={count}
+                                precision={0}
+                                min={1}
+                                max={80}
+                                onChange={(count) => setCount(count)}
+                            />
+                        </Form.Group>
+                        <Form.Group controlId="formContact">
+                            <Form.Label>Kontaktdaten</Form.Label>
+                            <Form.Control
+                                disabled={!edit}
+                                type="text"
+                                value={contact}
+                                onChange={(e) => setContact(e.target.value)}
+                            />
+                        </Form.Group>
+                        <Form.Group controlId="formNotes">
+                            <Form.Label>Anmerkungen</Form.Label>
+                            <Form.Control
+                                as="textarea"
+                                rows={4}
+                                disabled={!edit}
+                                type="text"
+                                value={notes}
+                                onChange={(e) => setNotes(e.target.value)}
+                            />
+                        </Form.Group>
+                    </Form>
+                </Localization>
             </Modal.Body>
             <Modal.Footer>
                 {
