@@ -38,7 +38,7 @@ function ReservationTable({filterToday}) {
     const [showModal, setShowModal] = useState(false);
     const handleShow = () => setShowModal(true);
     const handleClose = () => {
-        setSelectedReservation(null)
+        setSelectedReservation(null);
         setShowModal(false);
         fetchReservations();
     };

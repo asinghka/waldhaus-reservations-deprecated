@@ -34,10 +34,9 @@ const ReservationModal = ({ showModal, handleClose, saveReservation, initialDate
             setContact(initialReservations.contact);
             setNotes(initialReservations.notes);
             setDeleted(initialReservations.deleted);
-        } else if (initialDate) {
-            setDate(new Date(initialDate));
         } else {
             resetForm();
+            setDate(new Date(initialDate));
         }
     }, [initialDate, initialReservations]);
 
