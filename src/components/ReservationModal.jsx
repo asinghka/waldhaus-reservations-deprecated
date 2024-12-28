@@ -91,7 +91,7 @@ const ReservationModal = ({ showModal, handleClose, initialReservations, initial
                 {!valid && <Alert variant="danger">Es fehlen notwendige Informationen!</Alert>}
                 <Localization date={new DateLocalizer({culture: "de"})}>
                     <Form>
-                        <Form.Group className="pt-2" controlId="formName">
+                        <Form.Group controlId="formName">
                             <Form.Label>Name (<span style={{ color: "darkred" }}>*</span>)</Form.Label>
                             <Form.Control
                                 autoFocus

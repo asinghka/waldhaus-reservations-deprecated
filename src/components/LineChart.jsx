@@ -92,7 +92,7 @@ function LineChart({filterDate = new Date()}) {
             y: {
                 beginAtZero: true,
                 min: 0,
-                max: maxDataValue ? Math.ceil(maxDataValue * 1.1) : 10,
+                max: maxDataValue ? Math.ceil(maxDataValue * 1.2) : 10,
                 ticks: {
                     stepSize: 1,
                 }
