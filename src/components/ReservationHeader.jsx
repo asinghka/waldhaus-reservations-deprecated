@@ -15,7 +15,6 @@ function ReservationHeader({filterToday = false}) {
     const year = parseInt(params.get("year"), 10) || new Date().getFullYear();
     const month = parseInt(params.get("month"), 10) - 1 || new Date().getMonth(); // month is zero-indexed
     const day = parseInt(params.get("day"), 10) || new Date().getDate();
-    const graph = parseInt(params.get("graph"), 10);
 
     const [reservations, setReservations] = useState([]);
 
@@ -32,10 +31,6 @@ function ReservationHeader({filterToday = false}) {
     useEffect(() => {
         setFilterDate(new Date(year, month, day));
     }, [year, month, day]);
-    
-    useEffect(() => {
-        setgraphView(graph);
-    }, [graph]);
 
     const fetchReservations = async () => {
         try {
@@ -113,11 +108,7 @@ function ReservationHeader({filterToday = false}) {
                     />
                 )
             }
-            {
-                graphView && (
-                    <LineChart filterDate={filterDate} />
-                )
-            }
+            {graphView && (<LineChart filterDate={filterDate} />)}
         </>
     );
 }

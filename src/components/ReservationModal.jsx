@@ -155,17 +155,12 @@ const ReservationModal = ({ showModal, handleClose, initialReservations, initial
                 </Localization>
             </Modal.Body>
             <Modal.Footer>
-                {
-                    ( initialReservations && edit && <Button className="me-auto" variant="danger" onClick={handleDelete}>Löschen</Button>)
-                }
+                {( initialReservations && edit && <Button className="me-auto" variant="danger" onClick={handleDelete}>Löschen</Button>)}
                 <Button variant="secondary" onClick={handleClose}>
                     Schließen
                 </Button>
-                {
-                    ( !edit && <Button variant="warning" onClick={handleEdit}>Bearbeiten</Button> )
-                    ||
-                    ( edit && <Button variant="primary" onClick={handleSave}>Speichern</Button> )
-                }
+                {( !edit && <Button variant="warning" onClick={handleEdit}>Bearbeiten</Button> )}
+                {( edit && <Button variant="primary" onClick={handleSave}>Speichern</Button> )}
             </Modal.Footer>
         </Modal>
     );

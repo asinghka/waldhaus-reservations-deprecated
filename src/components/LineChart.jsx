@@ -10,7 +10,6 @@ import {
     Tooltip,
     PointElement
 } from "chart.js";
-import {useNavigate} from "react-router-dom";
 
 ChartJS.register(CategoryScale, LinearScale, PointElement, LineElement, Title, Tooltip, Legend);
 
@@ -25,8 +24,6 @@ function LineChart({filterDate = new Date()}) {
             console.error('Error fetching reservations:', error);
         }
     };
-
-    const navigate = useNavigate();
 
     useEffect(() => {
         fetchReservations();
@@ -101,11 +98,6 @@ function LineChart({filterDate = new Date()}) {
                 }
             },
         },
-        onClick: (event, elements) => {
-            if (elements.length > 0) {
-                navigate(`/all?graph=0&year=${filterDate.getFullYear()}&month=${filterDate.getMonth() + 1}&day=${filterDate.getDate()}`);
-            }
-        }
     };
 
     return (
