@@ -9,8 +9,8 @@
     "build": "vite build",
     "lint": "eslint .",
     "preview": "vite preview",
-    "electron": "electron .",
-    "deploy": "npm run build && electron-builder"
+    "electron": "npm run build && electron .",
+    "package": "npm run build && electron-builder"
   },
   "dependencies": {
     "better-sqlite3": "^11.7.0",
