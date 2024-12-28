@@ -65,6 +65,9 @@ function BarChart() {
         return chartData;
     }
 
+    const chartData = generateChartData(filteredReservations);
+    const maxDataValue = Math.max(...chartData.datasets[0].data);
+
     const navigate = useNavigate();
 
     const options = {
@@ -79,7 +82,7 @@ function BarChart() {
             y: {
                 beginAtZero: true,
                 min: 0,
-                max: 15,
+                max: maxDataValue + 5,
                 ticks: {
                     stepSize: 1,
                 }
@@ -93,7 +96,6 @@ function BarChart() {
         }
     };
 
-    const chartData = generateChartData(filteredReservations);
 
     return (
         <>

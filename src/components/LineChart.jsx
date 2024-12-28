@@ -67,7 +67,9 @@ function LineChart({filterDate}) {
                     data: values,
                     backgroundColor: "rgba(13, 110, 253, 1)",
                     borderColor: "rgba(0, 0, 0, 1)",
-                    borderWidth: 2
+                    borderWidth: 2,
+                    pointRadius: 8,
+                    pointHoverRadius: 12,
                 }
             ]
         };
@@ -76,6 +78,7 @@ function LineChart({filterDate}) {
     }
 
     const chartData = generateChartData(filteredReservations);
+    const maxDataValue = Math.max(...chartData.datasets[0].data);
 
     const options = {
         responsive: true,
@@ -89,7 +92,7 @@ function LineChart({filterDate}) {
             y: {
                 beginAtZero: true,
                 min: 0,
-                max: 15,
+                max: maxDataValue + 10,
                 ticks: {
                     stepSize: 1,
                 }
