@@ -106,6 +106,7 @@ const ReservationModal = ({ showModal, handleClose, initialReservations, initial
                             <DatePicker
                                 disabled={!edit}
                                 value={date}
+                                min={new Date(date)}
                                 valueEditFormat={{ dateStyle: "short" }}
                                 valueDisplayFormat={{ dateStyle: "long" }}
                                 onChange={(selectedDate) => setDate(selectedDate)}

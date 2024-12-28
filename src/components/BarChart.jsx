@@ -5,7 +5,7 @@ import {BarElement, CategoryScale, Chart as ChartJS, Legend, LinearScale, Title,
 
 ChartJS.register(CategoryScale, LinearScale, BarElement, Title, Tooltip, Legend);
 
-function BarChart({filterDate = new Date()}) {
+function BarChart({filterDate = new Date(), yearView = false}) {
     const [reservations, setReservations] = useState([]);
 
     const fetchReservations = async () => {
@@ -27,10 +27,14 @@ function BarChart({filterDate = new Date()}) {
 
         const reservationDate = new Date(reservation.date);
 
-        return reservationDate.getMonth() === filterDate.getMonth() && reservationDate.getFullYear() === filterDate.getFullYear();
+        if (yearView) {
+            return reservationDate.getFullYear() === filterDate.getFullYear();
+        } else {
+            return reservationDate.getMonth() === filterDate.getMonth() && reservationDate.getFullYear() === filterDate.getFullYear();
+        }
     })
 
-    const generateChartData = (filteredReservations) => {
+    const generateChartDataByMonth = (filteredReservations) => {
         let values = new Array(31).fill(0);
 
         for (const reservation of filteredReservations) {
@@ -54,13 +58,44 @@ function BarChart({filterDate = new Date()}) {
         return chartData;
     }
 
-    const chartData = generateChartData(filteredReservations);
+    const generateChartDataByYear = (filteredReservations) => {
+        let values = new Array(12).fill(0);
+
+        for (const reservation of filteredReservations) {
+            const month = new Date(reservation.date).getMonth();
+            values[month] += 1;
+        }
+
+        const chartData = {
+            labels: [
+                'Januar', 'Februar', 'März', 'April', 'Mai', 'Juni',
+                'Juli', 'August', 'September', 'Oktober', 'November', 'Dezember'
+            ],
+
+            datasets: [
+                {
+                    label: "Reservierungen",
+                    data: values,
+                    backgroundColor: "rgba(13, 110, 253, 1)",
+                    borderColor: "rgba(0, 0, 0, 1)",
+                    borderWidth: 2
+                }
+            ]
+        };
+        return chartData;
+    }
+
+    const chartData = yearView ? generateChartDataByYear(filteredReservations) : generateChartDataByMonth(filteredReservations);
     const maxDataValue = Math.max(...chartData.datasets[0].data);
 
     const navigate = useNavigate();
 
     const options = {
         responsive: true,
+        animation: {
+            duration: 300,
+            easing: 'easeInOutQuad',
+        },
         plugins: {
             legend: {
                 display: true,
@@ -71,14 +106,14 @@ function BarChart({filterDate = new Date()}) {
             y: {
                 beginAtZero: true,
                 min: 0,
-                max: maxDataValue + 5,
+                max: maxDataValue ? Math.ceil(maxDataValue * 1.1) : 10,
                 ticks: {
                     stepSize: 1,
                 }
             },
         },
         onClick: (event, elements) => {
-            if (elements.length > 0) {
+            if (elements.length > 0 && !yearView) {
                 const index = elements[0].index;
                 navigate(`/all?year=${filterDate.getFullYear()}&month=${filterDate.getMonth() + 1}&day=${index + 1}`);
             }

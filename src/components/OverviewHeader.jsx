@@ -3,8 +3,8 @@ import DatePicker from "react-widgets/DatePicker";
 import Localization from "react-widgets/Localization";
 import {DateLocalizer} from "react-widgets/IntlLocalizer";
 import {BarElement, CategoryScale, Chart as ChartJS, Legend, LinearScale, Title, Tooltip} from "chart.js";
-import {Form} from "react-bootstrap";
 import BarChart from "./BarChart.jsx";
+import {Form} from "react-bootstrap";
 
 ChartJS.register(CategoryScale, LinearScale, BarElement, Title, Tooltip, Legend);
 
@@ -14,23 +14,33 @@ function OverviewHeader() {
         'Juli', 'August', 'September', 'Oktober', 'November', 'Dezember'
     ];
 
+    const [yearView, setYearView] = useState(false);
     const [filterDate, setFilterDate] = useState(new Date());
+
+    const handleYearView = () => setYearView(!yearView);
 
     return (
         <>
-            <h2>Überblick für den Monat {germanMonths[filterDate.getMonth()] + " " + filterDate.getFullYear().toString()}</h2>
-            <Localization date={new DateLocalizer({culture: "de"})}>
-                <DatePicker
-                    style={{ width: "250px" }}
-                    value={filterDate}
-                    valueFormat={{ month: "long", year: "numeric" }}
-                    calendarProps={{ views: ["year", "decade", "century"] }}
-                    onChange={(date) => {
-                        setFilterDate(date);
-                    }}
-                />
-            </Localization>
-            <BarChart filterDate={filterDate}  height={100} />
+            <h2>Reservierungen für
+                {yearView ? " das Jahr " : " den Monat "}
+                {yearView && filterDate.getFullYear().toString()}
+                {!yearView && germanMonths[filterDate.getMonth()] + " " + filterDate.getFullYear().toString()}
+            </h2>
+            <Form className="d-flex">
+                <Localization date={new DateLocalizer({culture: "de"})}>
+                    <DatePicker
+                        style={{ width: "250px" }}
+                        value={filterDate}
+                        valueFormat={!yearView && { month: "long", year: "numeric" } || yearView && { year: "numeric" }}
+                        calendarProps={!yearView && { views: ["year", "decade", "century"] } || yearView && { views: ["decade", "century"] }}
+                        onChange={(date) => {
+                            setFilterDate(date);
+                        }}
+                    />
+                </Localization>
+                <Form.Switch className="ms-5 mt-2" label="Jahresansicht" onChange={handleYearView} />
+            </Form>
+            <BarChart filterDate={filterDate} yearView={yearView} height={100} />
         </>
     )
 }
