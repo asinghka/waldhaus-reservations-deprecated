@@ -15,13 +15,14 @@ function ReservationHeader({filterToday = false}) {
     const year = parseInt(params.get("year"), 10) || new Date().getFullYear();
     const month = parseInt(params.get("month"), 10) - 1 || new Date().getMonth(); // month is zero-indexed
     const day = parseInt(params.get("day"), 10) || new Date().getDate();
+    const graph = parseInt(params.get("graph"), 10);
 
     const [reservations, setReservations] = useState([]);
 
     const [filterTerm, setFilterTerm] = useState("");
     const [filterDate, setFilterDate] = useState(null);
 
-    const [graph, setGraph] = useState(false);
+    const [graphView, setgraphView] = useState(false);
     const [showModal, setShowModal] = useState(false);
 
     useEffect(() => {
@@ -31,6 +32,10 @@ function ReservationHeader({filterToday = false}) {
     useEffect(() => {
         setFilterDate(new Date(year, month, day));
     }, [year, month, day]);
+    
+    useEffect(() => {
+        setgraphView(graph);
+    }, [graph]);
 
     const fetchReservations = async () => {
         try {
@@ -61,7 +66,7 @@ function ReservationHeader({filterToday = false}) {
     const handleShow = () => setShowModal(true);
 
     const handleGraph = () => {
-        setGraph(!graph);
+        setgraphView(!graphView);
         setFilterTerm('');
     }
 
@@ -72,7 +77,7 @@ function ReservationHeader({filterToday = false}) {
                     <Form.Group controlId="nameFilter">
                         <Form.Control
                             className="ms-auto"
-                            disabled={graph}
+                            disabled={graphView}
                             style={{ minWidth: '300px' }}
                             type="text"
                             placeholder="Nach Namen filtern"
@@ -94,11 +99,11 @@ function ReservationHeader({filterToday = false}) {
                         </Form.Group>
                     </Localization>
                     <Form.Switch className="ms-5 mt-2" label="Graph Ansicht" onChange={handleGraph} />
-                    <Button variant={graph ? "secondary" : "primary"} className="ms-auto" disabled={graph} onClick={handleShow}>Neue Reservierung</Button>
+                    <Button variant={graphView ? "secondary" : "primary"} className="ms-auto" disabled={graphView} onClick={handleShow}>Neue Reservierung</Button>
                 </Form>
             </div>
             {
-                !graph && (
+                !graphView && (
                     <ReservationTable
                         fetchReservations={fetchReservations}
                         reservations={filteredReservations}
@@ -109,7 +114,7 @@ function ReservationHeader({filterToday = false}) {
                 )
             }
             {
-                graph && (
+                graphView && (
                     <LineChart filterDate={filterDate} />
                 )
             }
