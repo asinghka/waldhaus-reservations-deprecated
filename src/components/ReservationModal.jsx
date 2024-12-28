@@ -59,6 +59,11 @@ const ReservationModal = ({ showModal, handleClose, initialReservations, initial
             return;
         }
 
+        if (date.getHours() > 21 || date.getHours() < 11 || count < 1) {
+            setValid(false);
+            return;
+        }
+
         setValid(true);
 
         const combinedDate = new Date(date);
@@ -95,7 +100,7 @@ const ReservationModal = ({ showModal, handleClose, initialReservations, initial
                 {(!initialReservations && <Modal.Title>Neue Reservierung</Modal.Title>)}
             </Modal.Header>
             <Modal.Body>
-                {!valid && <Alert variant="danger">Es fehlen notwendige Informationen!</Alert>}
+                {!valid && <Alert variant="danger">Bitte Informationen überprüfen!</Alert>}
                 <Localization date={new DateLocalizer({culture: "de"})}>
                     <Form>
                         <Form.Group controlId="formName">
