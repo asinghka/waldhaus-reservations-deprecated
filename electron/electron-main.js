@@ -52,13 +52,11 @@ function createWindow() {
         height: 600,
         webPreferences: {
             preload: path.join(__dirname, 'preload.js'),
-            nodeIntegration: true,
         }
     })
 
     mainWindow.maximize()
     mainWindow.loadFile(path.join(__dirname, '..', 'dist', 'index.html'))
-    mainWindow.openDevTools()
 }
 
 app.whenReady().then(() => {
