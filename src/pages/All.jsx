@@ -1,10 +1,10 @@
-import ReservationTable from "../components/ReservationTable.jsx";
+import ReservationHeader from "../components/ReservationHeader.jsx";
 
 function All() {
     return (
         <div className="padding">
             <h2>Reservierungen</h2>
-            <ReservationTable filterToday={false}/>
+            <ReservationHeader filterToday={false}/>
         </div>
     )
 }

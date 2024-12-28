@@ -6,7 +6,7 @@ import {Modal, Button, Form, Alert} from 'react-bootstrap';
 import Localization from "react-widgets/Localization";
 import {DateLocalizer} from "react-widgets/IntlLocalizer";
 
-const ReservationModal = ({ showModal, handleClose, saveReservation, initialDate, initialReservations }) => {
+const ReservationModal = ({ showModal, handleClose, saveReservation, initialReservations, initialDate }) => {
 
     const defaultTime = new Date();
     defaultTime.setHours(18, 0, 0, 0);
@@ -30,6 +30,7 @@ const ReservationModal = ({ showModal, handleClose, saveReservation, initialDate
             setName(initialReservations.name);
             setDate(new Date(initialReservations.date));
             setTime(new Date(initialReservations.date));
+            console.log(time);
             setCount(initialReservations.count);
             setContact(initialReservations.contact);
             setNotes(initialReservations.notes);
@@ -69,14 +70,14 @@ const ReservationModal = ({ showModal, handleClose, saveReservation, initialDate
 
     const handleEdit = () => {
         setEdit(true);
-    }
+    };
 
     const handleDelete = async () => {
         const reservation = { id, name, date, count, contact, notes, deleted: 1 };
         await window.electron.saveReservation(reservation);
         resetForm();
         handleClose();
-    }
+    };
 
     return (
         <Modal centered show={showModal} onHide={handleClose}>

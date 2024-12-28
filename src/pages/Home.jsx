@@ -1,10 +1,10 @@
-import ReservationTable from "../components/ReservationTable.jsx";
+import ReservationHeader from "../components/ReservationHeader.jsx";
 
 function Home() {
     return (
         <div className="padding">
             <h2>Heutige Reservierungen</h2>
-            <ReservationTable filterToday={true}/>
+            <ReservationHeader filterToday={true}/>
         </div>
     )
 }
