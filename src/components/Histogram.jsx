@@ -3,6 +3,7 @@ import {Bar} from "react-chartjs-2"
 import DatePicker from "react-widgets/DatePicker";
 import Localization from "react-widgets/Localization";
 import {DateLocalizer} from "react-widgets/IntlLocalizer";
+import {useNavigate} from "react-router-dom";
 import {BarElement, CategoryScale, Chart as ChartJS, Legend, LinearScale, Title, Tooltip} from "chart.js";
 
 ChartJS.register(CategoryScale, LinearScale, BarElement, Title, Tooltip, Legend);
@@ -37,8 +38,6 @@ function Histogram() {
 
         const reservationDate = new Date(reservation.date);
 
-        console.log(reservationDate.getMonth(), " ", selectedMonth);
-
         return reservationDate.getMonth() === selectedMonth && reservationDate.getFullYear() === selectedYear;
     })
 
@@ -56,16 +55,17 @@ function Histogram() {
                 {
                     label: "Reservierungen pro Tag",
                     data: values,
-                    backgroundColor: "rgba(75, 192, 192, 0.6)",
-                    borderColor: "rgba(75, 192, 192, 1)",
+                    backgroundColor: "rgba(13, 110, 253, 1)",
+                    borderColor: "rgba(0, 0, 0, 1)",
                     borderWidth: 1
                 }
             ]
         };
 
-        console.log(chartData);
         return chartData;
     }
+
+    const navigate = useNavigate();
 
     const options = {
         responsive: true,
@@ -85,6 +85,12 @@ function Histogram() {
                 }
             },
         },
+        onClick: (event, elements) => {
+            if (elements.length > 0) {
+                const index = elements[0].index;
+                navigate(`/all?year=${selectedYear}&month=${selectedMonth + 1}&day=${index + 1}`);
+            }
+        }
     };
 
     const chartData = generateChartData(filteredReservations);

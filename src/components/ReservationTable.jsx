@@ -4,9 +4,17 @@ import {useEffect, useState} from "react";
 import DatePicker from "react-widgets/DatePicker";
 import Localization from "react-widgets/Localization";
 import {DateLocalizer} from "react-widgets/IntlLocalizer";
+import {useLocation} from "react-router-dom";
 
 
 function ReservationTable({filterToday}) {
+    const location = useLocation();
+    const params = new URLSearchParams(location.search);
+
+    const year = parseInt(params.get("year"), 10) || new Date().getFullYear();
+    const month = parseInt(params.get("month"), 10) - 1 || new Date().getMonth(); // month is zero-indexed
+    const day = parseInt(params.get("day"), 10) || new Date().getDate();
+
     const saveReservation = async (reservation) => {
         try {
             await window.electron.saveReservations(reservation);
@@ -38,11 +46,15 @@ function ReservationTable({filterToday}) {
     const [selectedReservation, setSelectedReservation] = useState(null);
 
     const [filterTerm, setFilterTerm] = useState("");
-    const [filterDate, setFilterDate] = useState(new Date());
+    const [filterDate, setFilterDate] = useState(null);
 
     useEffect(() => {
         fetchReservations();
     }, []);
+
+    useEffect(() => {
+        setFilterDate(new Date(year, month, day));
+    }, [year, month, day]);
 
     const handleRowClick = (reservation) => {
         setSelectedReservation(reservation);
@@ -50,8 +62,7 @@ function ReservationTable({filterToday}) {
     }
 
     const filteredReservations = reservations.filter((reservation) => {
-        if (reservation.deleted)
-            return false;
+        if (reservation.deleted) return false;
 
         let isFilterDate;
 
