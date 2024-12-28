@@ -30,21 +30,20 @@ const ReservationModal = ({ showModal, handleClose, saveReservation, initialRese
             setName(initialReservations.name);
             setDate(new Date(initialReservations.date));
             setTime(new Date(initialReservations.date));
-            console.log(time);
             setCount(initialReservations.count);
             setContact(initialReservations.contact);
             setNotes(initialReservations.notes);
             setDeleted(initialReservations.deleted);
         } else {
             resetForm();
-            setDate(new Date(initialDate));
         }
     }, [initialDate, initialReservations]);
 
     const resetForm = () => {
         setId(null);
         setName('');
-        setDate(new Date());
+        setDate(new Date(initialDate));
+        date.setHours(18, 0, 0, 0);
         setTime(defaultTime);
         setCount(2);
         setContact('');
@@ -62,7 +61,10 @@ const ReservationModal = ({ showModal, handleClose, saveReservation, initialRese
 
         setValid(true);
 
-        const reservation = { id, name, date, count, contact, notes, deleted };
+        const combinedDate = new Date(date);
+        combinedDate.setHours(time.getHours(), time.getMinutes(), time.getSeconds(), 0);
+
+        const reservation = { id, name, date: combinedDate, count, contact, notes, deleted };
         await window.electron.saveReservation(reservation);
         resetForm();
         handleClose();
@@ -110,7 +112,7 @@ const ReservationModal = ({ showModal, handleClose, saveReservation, initialRese
                                 value={date}
                                 valueEditFormat={{ dateStyle: "short" }}
                                 valueDisplayFormat={{ dateStyle: "long" }}
-                                onChange={(date) => setDate(date)}
+                                onChange={(selectedDate) => setDate(selectedDate)}
                             />
                         </Form.Group>
                         <Form.Group className="pt-2" controlId="formTime">
@@ -118,18 +120,7 @@ const ReservationModal = ({ showModal, handleClose, saveReservation, initialRese
                             <TimeInput
                                 disabled={!edit}
                                 value={time}
-                                onChange={(time) => {
-                                    setTime(time);
-
-                                    const updatedDate = new Date(date);
-
-                                    const hours = time.getHours();
-                                    const minutes = time.getMinutes();
-                                    const seconds = time.getSeconds();
-
-                                    updatedDate.setHours(hours, minutes, seconds, 0);
-                                    setDate(updatedDate);
-                                }}
+                                onChange={(selectedTime) => setTime(selectedTime)}
                             />
                         </Form.Group>
                         <Form.Group className="pt-2" controlId="formCount">
