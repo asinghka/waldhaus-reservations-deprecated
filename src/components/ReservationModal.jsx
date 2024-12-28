@@ -2,7 +2,7 @@ import {useEffect, useState} from 'react';
 import DatePicker from 'react-widgets/DatePicker';
 import TimeInput from "react-widgets/TimeInput";
 import NumberPicker from "react-widgets/NumberPicker";
-import { Modal, Button, Form } from 'react-bootstrap';
+import {Modal, Button, Form, Alert} from 'react-bootstrap';
 import Localization from "react-widgets/Localization";
 import {DateLocalizer} from "react-widgets/IntlLocalizer";
 
@@ -21,6 +21,7 @@ const ReservationModal = ({ showModal, handleClose, saveReservation, initialDate
     const [deleted, setDeleted] = useState(0);
 
     const [edit, setEdit] = useState(true);
+    const [valid, setValid] = useState(true);
 
     useEffect(() => {
         if (initialReservations) {
@@ -49,10 +50,18 @@ const ReservationModal = ({ showModal, handleClose, saveReservation, initialDate
         setContact('');
         setNotes('');
         setEdit(true);
+        setValid(true);
         setDeleted(0);
     };
 
     const handleSave = async () => {
+        if (!name || !date || !count) {
+            setValid(false);
+            return;
+        }
+
+        setValid(true);
+
         const reservation = { id, name, date, count, contact, notes, deleted };
         await window.electron.saveReservation(reservation);
         resetForm();
@@ -81,10 +90,11 @@ const ReservationModal = ({ showModal, handleClose, saveReservation, initialDate
 
             </Modal.Header>
             <Modal.Body>
+                {!valid && <Alert variant="danger">Es fehlen notwendige Informationen!</Alert>}
                 <Localization date={new DateLocalizer({culture: "de"})}>
                     <Form>
-                        <Form.Group controlId="formName">
-                            <Form.Label>Name</Form.Label>
+                        <Form.Group className="pt-2" controlId="formName">
+                            <Form.Label>Name (<span style={{ color: "darkred" }}>*</span>)</Form.Label>
                             <Form.Control
                                 autoFocus
                                 disabled={!edit}
@@ -93,8 +103,8 @@ const ReservationModal = ({ showModal, handleClose, saveReservation, initialDate
                                 onChange={(e) => setName(e.target.value)}
                             />
                         </Form.Group>
-                        <Form.Group controlId="formDate">
-                            <Form.Label>Datum</Form.Label>
+                        <Form.Group className="pt-2" controlId="formDate">
+                            <Form.Label>Datum (<span style={{ color: "darkred" }}>*</span>)</Form.Label>
                             <DatePicker
                                 disabled={!edit}
                                 value={date}
@@ -103,8 +113,8 @@ const ReservationModal = ({ showModal, handleClose, saveReservation, initialDate
                                 onChange={(date) => setDate(date)}
                             />
                         </Form.Group>
-                        <Form.Group controlId="formTime">
-                            <Form.Label>Uhrzeit</Form.Label><br/>
+                        <Form.Group className="pt-2" controlId="formTime">
+                            <Form.Label>Uhrzeit (<span style={{ color: "darkred" }}>*</span>)</Form.Label><br/>
                             <TimeInput
                                 disabled={!edit}
                                 value={time}
@@ -122,8 +132,8 @@ const ReservationModal = ({ showModal, handleClose, saveReservation, initialDate
                                 }}
                             />
                         </Form.Group>
-                        <Form.Group controlId="formCount">
-                            <Form.Label>Anzahl Personen</Form.Label>
+                        <Form.Group className="pt-2" controlId="formCount">
+                            <Form.Label>Anzahl Personen (<span style={{ color: "darkred" }}>*</span>)</Form.Label>
                             <NumberPicker
                                 disabled={!edit}
                                 value={count}
@@ -133,7 +143,7 @@ const ReservationModal = ({ showModal, handleClose, saveReservation, initialDate
                                 onChange={(count) => setCount(count)}
                             />
                         </Form.Group>
-                        <Form.Group controlId="formContact">
+                        <Form.Group className="pt-2" controlId="formContact">
                             <Form.Label>Kontaktdaten</Form.Label>
                             <Form.Control
                                 disabled={!edit}
@@ -142,7 +152,7 @@ const ReservationModal = ({ showModal, handleClose, saveReservation, initialDate
                                 onChange={(e) => setContact(e.target.value)}
                             />
                         </Form.Group>
-                        <Form.Group controlId="formNotes">
+                        <Form.Group className="pt-2" controlId="formNotes">
                             <Form.Label>Anmerkungen</Form.Label>
                             <Form.Control
                                 as="textarea"
