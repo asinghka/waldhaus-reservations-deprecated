@@ -133,7 +133,7 @@ function ReservationTable({filterToday}) {
                 ))}
                 </tbody>
             </Table>
-            <ReservationModal showModal={showModal} handleClose={handleClose} saveReservation={saveReservation} initialReservations={selectedReservation} />
+            <ReservationModal showModal={showModal} handleClose={handleClose} saveReservation={saveReservation} initialDate={filterDate} initialReservations={selectedReservation} />
         </>
     );
 }

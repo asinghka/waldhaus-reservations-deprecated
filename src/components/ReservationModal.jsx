@@ -6,11 +6,15 @@ import { Modal, Button, Form } from 'react-bootstrap';
 import Localization from "react-widgets/Localization";
 import {DateLocalizer} from "react-widgets/IntlLocalizer";
 
-const ReservationModal = ({ showModal, handleClose, saveReservation, initialReservations }) => {
+const ReservationModal = ({ showModal, handleClose, saveReservation, initialDate, initialReservations }) => {
+
+    const defaultTime = new Date();
+    defaultTime.setHours(18, 0, 0, 0);
+
     const [id, setId] = useState(null);
     const [name, setName] = useState('');
     const [date, setDate] = useState(new Date());
-    const [time, setTime] = useState(new Date());
+    const [time, setTime] = useState(defaultTime);
     const [count, setCount] = useState(2);
     const [contact, setContact] = useState('');
     const [notes, setNotes] = useState('');
@@ -29,16 +33,18 @@ const ReservationModal = ({ showModal, handleClose, saveReservation, initialRese
             setContact(initialReservations.contact);
             setNotes(initialReservations.notes);
             setDeleted(initialReservations.deleted);
+        } else if (initialDate) {
+            setDate(new Date(initialDate));
         } else {
             resetForm();
         }
-    }, [initialReservations]);
+    }, [initialDate, initialReservations]);
 
     const resetForm = () => {
         setId(null);
         setName('');
         setDate(new Date());
-        setTime(new Date());
+        setTime(defaultTime);
         setCount(2);
         setContact('');
         setNotes('');
