@@ -64,7 +64,7 @@ function AdminHeader() {
 
     return (
         <>
-            <h5>Gelöschte Reservierungen für
+            <h5 style={{ marginTop: "-1.5em"}}>Gelöschte Reservierungen für
                 {!graphView && " den Tag " + filterDate.toLocaleDateString('de-DE')}
                 {graphView && " den Monat " + germanMonths[filterDate.getMonth()]}
             </h5>
