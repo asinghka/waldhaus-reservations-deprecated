@@ -82,7 +82,9 @@ function ReservationHeader({filterToday = false}) {
                     </Form.Group>
                     <Localization date={new DateLocalizer({culture: "de"})}>
                         <Form.Group controlId="dateFilter">
+                        {!filterToday &&
                             <DatePicker
+                                style={{ width: '250px' }}
                                 className="flex ms-3"
                                 defaultValue={new Date()}
                                 value={filterDate}
@@ -90,7 +92,15 @@ function ReservationHeader({filterToday = false}) {
                                 valueEditFormat={{ dateStyle: "short" }}
                                 valueDisplayFormat={{ dateStyle: "long" }}
                                 onChange={(date) => setFilterDate(date)}
-                            />
+                            />}
+                            {filterToday &&
+                            <Form.Control
+                                style={{ width: '250px' }}
+                                type="text"
+                                className="flex ms-3"
+                                placeholder="Heute"
+                                disabled={true}
+                            />}
                         </Form.Group>
                     </Localization>
                     <Form.Switch checked={graphView} className="ms-5 mt-2" label="Graph Ansicht" onChange={handleGraph} />
