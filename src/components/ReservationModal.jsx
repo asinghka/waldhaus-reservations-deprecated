@@ -53,16 +53,36 @@ const ReservationModal = ({ showModal, handleClose, initialReservations, initial
         setDeleted(0);
     };
 
+    const [alertMessage, setAlertMessage] = useState('');
+
     const validateForm = () => {
-        if (!name || !date || !count) {
+        if (!name) {
+             setAlertMessage('Bitte Namen eingeben.');
             setValid(false);
-            console.log("first fail");
             return false;
         }
 
-        if (time.getHours() > 21 || time.getHours() < 11 || count < 1) {
+        if (!date) {
+            setAlertMessage('Bitte Datum auswählen.');
             setValid(false);
-            console.log("second fail");
+            return false;
+        }
+
+        if (!count) {
+            setAlertMessage('Bitte Personenanzahl eingeben.');
+            setValid(false);
+            return false;
+        }
+
+        if (time.getHours() > 21 || time.getHours() < 11) {
+            setAlertMessage('Uhrzeit außerhalb Öffnungszeiten.');
+            setValid(false);
+            return false;
+        }
+
+        if (count < 1 || count > 80) {
+            setAlertMessage('Bitte gültige Personenanzahl eingeben.');
+            setValid(false);
             return false;
         }
 
@@ -113,7 +133,7 @@ const ReservationModal = ({ showModal, handleClose, initialReservations, initial
                 {(!admin && !initialReservations && <Modal.Title>Neue Reservierung</Modal.Title>)}
             </Modal.Header>
             <Modal.Body>
-                {!valid && <Alert variant="danger">Bitte Informationen überprüfen!</Alert>}
+                {!valid && <Alert variant="danger">{alertMessage}</Alert>}
                 <Localization date={new DateLocalizer({culture: "de"})}>
                     <Form>
                         <Form.Group controlId="formName">
@@ -151,8 +171,6 @@ const ReservationModal = ({ showModal, handleClose, initialReservations, initial
                                 disabled={!edit}
                                 value={count}
                                 precision={0}
-                                min={1}
-                                max={80}
                                 onChange={(count) => setCount(count)}
                             />
                         </Form.Group>
