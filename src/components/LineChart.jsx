@@ -10,6 +10,7 @@ import {
     Tooltip,
     PointElement
 } from "chart.js";
+import {useNavigate} from "react-router-dom";
 
 ChartJS.register(CategoryScale, LinearScale, PointElement, LineElement, Title, Tooltip, Legend);
 
@@ -80,6 +81,8 @@ function LineChart({filterDate = new Date()}) {
     const chartData = generateChartData(filteredReservations);
     const maxDataValue = Math.max(...chartData.datasets[0].data);
 
+    const navigate = useNavigate();
+
     const options = {
         responsive: true,
         plugins: {
@@ -98,6 +101,9 @@ function LineChart({filterDate = new Date()}) {
                 }
             },
         },
+        onClick: () => {
+            navigate(`/all?year=${filterDate.getFullYear()}&month=${filterDate.getMonth() + 1}&day=${filterDate.getDate()}`);
+        }
     };
 
     return (

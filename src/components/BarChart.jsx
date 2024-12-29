@@ -113,12 +113,12 @@ function BarChart({filterDate = new Date(), yearView = false, admin = false}) {
             },
         },
         onClick: (event, elements) => {
-            if (elements.length > 0 && admin) {
+            if (elements.length >= 0 && admin) {
                 const index = elements[0].index;
                 navigate(`/admin?year=${filterDate.getFullYear()}&month=${filterDate.getMonth() + 1}&day=${index + 1}`);
                 return;
             }
-            if (elements.length > 0 && !yearView) {
+            if (elements.length >= 0 && !yearView) {
                 const index = elements[0].index;
                 navigate(`/all?year=${filterDate.getFullYear()}&month=${filterDate.getMonth() + 1}&day=${index + 1}`);
             }

@@ -93,7 +93,7 @@ function ReservationHeader({filterToday = false}) {
                             />
                         </Form.Group>
                     </Localization>
-                    <Form.Switch className="ms-5 mt-2" label="Graph Ansicht" onChange={handleGraph} />
+                    <Form.Switch checked={graphView} className="ms-5 mt-2" label="Graph Ansicht" onChange={handleGraph} />
                     {<Button variant={graphView ? "secondary" : "primary"} className="ms-auto" disabled={graphView} onClick={handleShow}>Neue Reservierung</Button>}
                 </Form>
             </div>
