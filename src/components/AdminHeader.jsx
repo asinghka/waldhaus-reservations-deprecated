@@ -110,6 +110,7 @@ function AdminHeader() {
                 filterDate={filterDate}
                 showModal={showModal}
                 setShowModal={setShowModal}
+                admin={true}
             />}
             {graphView && <BarChart filterDate={filterDate} height={100} admin={true} />}
         </>

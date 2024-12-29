@@ -53,18 +53,25 @@ const ReservationModal = ({ showModal, handleClose, initialReservations, initial
         setDeleted(0);
     };
 
-    const handleSave = async () => {
+    const validateForm = () => {
         if (!name || !date || !count) {
             setValid(false);
-            return;
+            console.log("first fail");
+            return false;
         }
 
-        if (date.getHours() > 21 || date.getHours() < 11 || count < 1) {
+        if (time.getHours() > 21 || time.getHours() < 11 || count < 1) {
             setValid(false);
-            return;
+            console.log("second fail");
+            return false;
         }
 
         setValid(true);
+        return true;
+    }
+
+    const handleSave = async () => {
+        if (!validateForm()) return;
 
         const combinedDate = new Date(date);
         combinedDate.setHours(time.getHours(), time.getMinutes(), time.getSeconds(), 0);
@@ -87,7 +94,12 @@ const ReservationModal = ({ showModal, handleClose, initialReservations, initial
     };
 
     const handleRestore = async () => {
-        const reservation = { id, name, date, count, contact, notes, deleted: 0 };
+        if (!validateForm()) return;
+
+        const combinedDate = new Date(date);
+        combinedDate.setHours(time.getHours(), time.getMinutes(), time.getSeconds(), 0);
+
+        const reservation = { id, name, date: combinedDate, count, contact, notes, deleted: 0 };
         await window.electron.saveReservation(reservation);
         resetForm();
         handleClose();
