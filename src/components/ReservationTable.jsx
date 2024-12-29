@@ -23,7 +23,7 @@ function ReservationTable({fetchReservations, reservations, filterToday = false,
         const reservationTime = new Date(reservation.date);
         const now = new Date();
 
-        return reservationTime < now;
+        return reservationTime < now.setMinutes(now.getMinutes() - 15);
     };
 
     return (
