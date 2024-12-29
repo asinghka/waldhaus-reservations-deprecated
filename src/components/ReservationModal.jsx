@@ -108,8 +108,9 @@ const ReservationModal = ({ showModal, handleClose, initialReservations, initial
     return (
         <Modal centered show={showModal} onHide={handleClose}>
             <Modal.Header closeButton>
-                {(initialReservations && <Modal.Title>Bestehende Reservierung</Modal.Title>)}
-                {(!initialReservations && <Modal.Title>Neue Reservierung</Modal.Title>)}
+                {(admin && initialReservations && <Modal.Title>Gelöschte Reservierung</Modal.Title>)}
+                {(!admin && initialReservations && <Modal.Title>Bestehende Reservierung</Modal.Title>)}
+                {(!admin && !initialReservations && <Modal.Title>Neue Reservierung</Modal.Title>)}
             </Modal.Header>
             <Modal.Body>
                 {!valid && <Alert variant="danger">Bitte Informationen überprüfen!</Alert>}

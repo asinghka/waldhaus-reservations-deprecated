@@ -8,7 +8,7 @@ import {Form} from "react-bootstrap";
 
 ChartJS.register(CategoryScale, LinearScale, BarElement, Title, Tooltip, Legend);
 
-function OverviewHeader() {
+function StatsHeader() {
     const germanMonths = [
         'Januar', 'Februar', 'März', 'April', 'Mai', 'Juni',
         'Juli', 'August', 'September', 'Oktober', 'November', 'Dezember'
@@ -47,11 +47,11 @@ function OverviewHeader() {
                         }}
                     />}
                 </Localization>
-                <Form.Switch className="ms-5 mt-2" label="Jahresansicht" onChange={handleYearView} />
+                <Form.Switch className="ms-5 mt-2" label="Jahresübersicht" onChange={handleYearView} />
             </Form>
             <BarChart filterDate={filterDate} yearView={yearView} height={100} />
         </>
     )
 }
 
-export default OverviewHeader;
+export default StatsHeader;

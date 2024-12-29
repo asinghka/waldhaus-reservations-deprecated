@@ -26,7 +26,7 @@ function NavBar() {
             <Nav variant="underline" className="ms-auto pe-5">
                 <CustomLink to="/">Heute</CustomLink>
                 <CustomLink to="/all">Reservierungen</CustomLink>
-                <CustomLink to="/overview">Überblick</CustomLink>
+                <CustomLink to="/stats">Statistiken</CustomLink>
                 <CustomLink to="/admin">Admin</CustomLink>
             </Nav>
         </Navbar>

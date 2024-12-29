@@ -101,7 +101,7 @@ function AdminHeader() {
                         />}
                     </Form.Group>
                 </Localization>
-                <Form.Switch checked={graphView} className="ms-5 mt-2" label="Monatsansicht" onChange={handleGraphView} />
+                <Form.Switch checked={graphView} className="ms-5 mt-2" label="Monatsübersicht" onChange={handleGraphView} />
             </Form>
 
             {!graphView && <ReservationTable
