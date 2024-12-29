@@ -26,6 +26,10 @@ h2 {
   padding: 1em;
 }
 
+h5 {
+  padding-bottom: 2em;
+}
+
 th {
   width: 200px;
 }

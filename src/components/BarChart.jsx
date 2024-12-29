@@ -5,7 +5,7 @@ import {BarElement, CategoryScale, Chart as ChartJS, Legend, LinearScale, Title,
 
 ChartJS.register(CategoryScale, LinearScale, BarElement, Title, Tooltip, Legend);
 
-function BarChart({filterDate = new Date(), yearView = false}) {
+function BarChart({filterDate = new Date(), yearView = false, admin = false}) {
     const [reservations, setReservations] = useState([]);
 
     const fetchReservations = async () => {
@@ -22,8 +22,11 @@ function BarChart({filterDate = new Date(), yearView = false}) {
     }, []);
 
     const filteredReservations = reservations.filter((reservation) => {
-        if (reservation.deleted)
-            return false;
+        if (admin) {
+            if (!reservation.deleted) return false
+        } else {
+            if (reservation.deleted) return false;
+        }
 
         const reservationDate = new Date(reservation.date);
 
@@ -46,9 +49,9 @@ function BarChart({filterDate = new Date(), yearView = false}) {
             labels: Array.from({ length: 31 }, (_, i) => (i + 1).toString() + "." + (filterDate.getMonth()+1).toString()),
             datasets: [
                 {
-                    label: "Reservierungen",
+                    label: !admin && "Reservierungen" || admin && "Gelöschte Reservierungen",
                     data: values,
-                    backgroundColor: "rgba(13, 110, 253, 1)",
+                    backgroundColor: !admin && "rgba(13, 110, 253, 1)" || admin && "rgb(216,0,0)",
                     borderColor: "rgba(0, 0, 0, 1)",
                     borderWidth: 2
                 }
@@ -76,9 +79,6 @@ function BarChart({filterDate = new Date(), yearView = false}) {
                 {
                     label: "Reservierungen",
                     data: values,
-                    backgroundColor: "rgba(13, 110, 253, 1)",
-                    borderColor: "rgba(0, 0, 0, 1)",
-                    borderWidth: 2
                 }
             ]
         };
@@ -113,6 +113,11 @@ function BarChart({filterDate = new Date(), yearView = false}) {
             },
         },
         onClick: (event, elements) => {
+            if (elements.length > 0 && admin) {
+                const index = elements[0].index;
+                navigate(`/admin?year=${filterDate.getFullYear()}&month=${filterDate.getMonth() + 1}&day=${index + 1}`);
+                return;
+            }
             if (elements.length > 0 && !yearView) {
                 const index = elements[0].index;
                 navigate(`/all?year=${filterDate.getFullYear()}&month=${filterDate.getMonth() + 1}&day=${index + 1}`);

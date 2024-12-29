@@ -8,12 +8,12 @@ import ReservationTable from "./ReservationTable.jsx";
 import LineChart from "./LineChart.jsx";
 
 
-function ReservationHeader({filterToday = false, admin = false}) {
+function ReservationHeader({filterToday = false}) {
     const location = useLocation();
     const params = new URLSearchParams(location.search);
 
     const year = parseInt(params.get("year"), 10) || new Date().getFullYear();
-    const month = parseInt(params.get("month"), 10) - 1 || new Date().getMonth(); // month is zero-indexed
+    const month = parseInt(params.get("month"), 10) - 1 || new Date().getMonth();
     const day = parseInt(params.get("day"), 10) || new Date().getDate();
 
     const [reservations, setReservations] = useState([]);
@@ -43,11 +43,7 @@ function ReservationHeader({filterToday = false, admin = false}) {
     };
 
     const filteredReservations = reservations.filter((reservation) => {
-        if (admin) {
-            if (!reservation.deleted) return false
-        } else {
-            if (reservation.deleted) return false;
-        }
+        if (reservation.deleted) return false;
 
         let isFilterDate;
 
@@ -97,8 +93,8 @@ function ReservationHeader({filterToday = false, admin = false}) {
                             />
                         </Form.Group>
                     </Localization>
-                    <Form.Switch disabled={admin} className="ms-5 mt-2" label="Graph Ansicht" onChange={handleGraph} />
-                    <Button variant={graphView || admin ? "secondary" : "primary"} className="ms-auto" disabled={graphView || admin} onClick={handleShow}>Neue Reservierung</Button>
+                    <Form.Switch className="ms-5 mt-2" label="Graph Ansicht" onChange={handleGraph} />
+                    {<Button variant={graphView ? "secondary" : "primary"} className="ms-auto" disabled={graphView} onClick={handleShow}>Neue Reservierung</Button>}
                 </Form>
             </div>
             {
@@ -109,7 +105,6 @@ function ReservationHeader({filterToday = false, admin = false}) {
                         filterDate={filterDate}
                         showModal={showModal}
                         setShowModal={setShowModal}
-                        admin={admin}
                     />
                 )
             }

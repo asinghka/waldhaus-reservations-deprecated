@@ -1,10 +1,10 @@
-import ReservationHeader from "../components/ReservationHeader.jsx";
+import AdminHeader from "../components/AdminHeader.jsx";
 
 function Admin() {
     return (
         <div className="padding">
             <h2>Admin</h2>
-            <ReservationHeader filterToday={false} admin={true}/>
+            <AdminHeader/>
         </div>
     )
 }
