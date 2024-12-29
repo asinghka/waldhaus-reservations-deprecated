@@ -112,6 +112,7 @@ function ReservationHeader({filterToday = false}) {
                     <ReservationTable
                         fetchReservations={fetchReservations}
                         reservations={filteredReservations}
+                        filterToday={filterToday}
                         filterDate={filterDate}
                         showModal={showModal}
                         setShowModal={setShowModal}
