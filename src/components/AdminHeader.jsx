@@ -68,6 +68,7 @@ function AdminHeader() {
                 {!graphView && " den Tag " + filterDate.toLocaleDateString('de-DE')}
                 {graphView && " den Monat " + germanMonths[filterDate.getMonth()]}
             </h5>
+            <hr/>
             <Form className="mb-3 d-flex">
                 <Form.Group controlId="nameFilter">
                     <Form.Control

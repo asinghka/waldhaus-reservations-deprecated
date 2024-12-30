@@ -29,31 +29,32 @@ function StatsHeader() {
                 {yearView && filterDate.getFullYear().toString()}
                 {!yearView && germanMonths[filterDate.getMonth()] + " " + filterDate.getFullYear().toString()}
             </h2>
+            <hr/>
             <Form className="d-flex">
                 <Localization date={new DateLocalizer({culture: "de"})}>
                     {yearView && <DatePicker
-                        style={{ width: "250px" }}
+                        style={{width: "250px"}}
                         value={filterDate}
-                        valueFormat={yearView && { year: "numeric" }}
-                        calendarProps={yearView && { views: ["decade", "century"] }}
+                        valueFormat={yearView && {year: "numeric"}}
+                        calendarProps={yearView && {views: ["decade", "century"]}}
                         onChange={(date) => {
                             setFilterDate(date);
                         }}
                     />}
                     {!yearView && <DatePicker
-                        style={{ width: "250px" }}
+                        style={{width: "250px"}}
                         value={filterDate}
-                        valueFormat={{ month: "long", year: "numeric" }}
-                        calendarProps={{ views: ["year", "decade", "century"] }}
+                        valueFormat={{month: "long", year: "numeric"}}
+                        calendarProps={{views: ["year", "decade", "century"]}}
                         onChange={(date) => {
                             setFilterDate(date);
                         }}
                     />}
                 </Localization>
-                <Form.Switch className="ms-5 mt-2" label="Jahresübersicht" onChange={handleYearView} />
-                <Form.Switch className="ms-auto ms-5 mt-2" label="Personenanzahl" onChange={handleCountView} />
+                <Form.Switch className="ms-5 mt-2" label="Jahresübersicht" onChange={handleYearView}/>
+                <Form.Switch className="ms-auto ms-5 mt-2" label="Personenanzahl" onChange={handleCountView}/>
             </Form>
-            <BarChart filterDate={filterDate} yearView={yearView} countView={countView} height={100} />
+            <BarChart filterDate={filterDate} yearView={yearView} countView={countView} height={100}/>
         </>
     )
 }
