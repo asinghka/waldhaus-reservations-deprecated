@@ -58,7 +58,7 @@ function BarChart({filterDate = new Date(), yearView = false, countView = false,
                 {
                     label: countView && "Personen" || !admin && "Reservierungen" || admin && "Gelöschte Reservierungen",
                     data: values,
-                    backgroundColor: countView && "rgb(253,205,13)" || !admin && "rgba(13, 110, 253, 1)" || admin && "rgb(216,0,0)",
+                    backgroundColor: countView && "rgb(51,239,0)" || !admin && "rgba(13, 110, 253, 1)" || admin && "rgb(216,0,0)",
                     borderColor: "rgba(0, 0, 0, 1)",
                     borderWidth: 2
                 }
@@ -93,7 +93,7 @@ function BarChart({filterDate = new Date(), yearView = false, countView = false,
                 {
                     label: countView && "Personen" || !countView && "Reservierungen",
                     data: values,
-                    backgroundColor: countView && "rgb(253,205,13)" || !countView && "rgba(13, 110, 253, 1)",
+                    backgroundColor: countView && "rgb(51,239,0)" || !countView && "rgba(13, 110, 253, 1)",
                     borderColor: "rgba(0, 0, 0, 1)",
                     borderWidth: 2
                 }

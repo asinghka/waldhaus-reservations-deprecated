@@ -66,7 +66,7 @@ function LineChart({filterDate = new Date()}) {
                 {
                     label: "Personen",
                     data: values,
-                    backgroundColor: "rgba(13, 110, 253, 1)",
+                    backgroundColor: "rgb(51,239,0)",
                     borderColor: "rgba(0, 0, 0, 1)",
                     borderWidth: 2,
                     pointRadius: 8,
