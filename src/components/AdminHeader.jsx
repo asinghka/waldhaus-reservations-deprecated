@@ -64,10 +64,10 @@ function AdminHeader() {
 
     return (
         <>
-            <h5 style={{ marginTop: "-1.5em"}}>Gelöschte Reservierungen für
+            <h2>Gelöschte Reservierungen für
                 {!graphView && " den Tag " + filterDate.toLocaleDateString('de-DE')}
                 {graphView && " den Monat " + germanMonths[filterDate.getMonth()]}
-            </h5>
+            </h2>
             <hr/>
             <Form className="mb-3 d-flex">
                 <Form.Group controlId="nameFilter">
