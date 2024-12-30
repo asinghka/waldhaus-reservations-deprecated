@@ -23,7 +23,8 @@ function StatsHeader() {
 
     return (
         <>
-            <h2>Reservierungen für
+            <h2>{countView && "Personen für"}
+                {!countView && "Reservierungen für"}
                 {yearView ? " das Jahr " : " den Monat "}
                 {yearView && filterDate.getFullYear().toString()}
                 {!yearView && germanMonths[filterDate.getMonth()] + " " + filterDate.getFullYear().toString()}
