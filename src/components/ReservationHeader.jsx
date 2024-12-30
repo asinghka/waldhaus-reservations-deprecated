@@ -19,7 +19,7 @@ function ReservationHeader({filterToday = false}) {
     const [reservations, setReservations] = useState([]);
 
     const [filterTerm, setFilterTerm] = useState("");
-    const [filterDate, setFilterDate] = useState(null);
+    const [filterDate, setFilterDate] = useState(new Date());
 
     const [graphView, setgraphView] = useState(false);
     const [showModal, setShowModal] = useState(false);
@@ -98,7 +98,7 @@ function ReservationHeader({filterToday = false}) {
                                 style={{ width: '250px' }}
                                 type="text"
                                 className="flex ms-3"
-                                placeholder="Heute"
+                                placeholder={"Heute am " + filterDate.toLocaleDateString('de-DE').split('T')[0]}
                                 disabled={true}
                             />}
                         </Form.Group>
