@@ -5,7 +5,7 @@ import {BarElement, CategoryScale, Chart as ChartJS, Legend, LinearScale, Title,
 
 ChartJS.register(CategoryScale, LinearScale, BarElement, Title, Tooltip, Legend);
 
-function BarChart({filterDate = new Date(), yearView = false, admin = false}) {
+function BarChart({filterDate = new Date(), yearView = false, countView = false, admin = false}) {
     const [reservations, setReservations] = useState([]);
 
     const fetchReservations = async () => {
@@ -40,18 +40,25 @@ function BarChart({filterDate = new Date(), yearView = false, admin = false}) {
     const generateChartDataByMonth = (filteredReservations) => {
         let values = new Array(31).fill(0);
 
-        for (const reservation of filteredReservations) {
-            const day = new Date(reservation.date).getDate();
-            values[day - 1] += 1;
+        if (!countView) {
+            for (const reservation of filteredReservations) {
+                const day = new Date(reservation.date).getDate();
+                values[day - 1] += 1;
+            }
+        } else {
+            for (const reservation of filteredReservations) {
+                const day = new Date(reservation.date).getDate();
+                values[day - 1] += reservation.count;
+            }
         }
 
         const chartData = {
             labels: Array.from({ length: 31 }, (_, i) => (i + 1).toString() + "." + (filterDate.getMonth()+1).toString()),
             datasets: [
                 {
-                    label: !admin && "Reservierungen" || admin && "Gelöschte Reservierungen",
+                    label: countView && "Personen" || !admin && "Reservierungen" || admin && "Gelöschte Reservierungen",
                     data: values,
-                    backgroundColor: !admin && "rgba(13, 110, 253, 1)" || admin && "rgb(216,0,0)",
+                    backgroundColor: countView && "rgb(253,205,13)" || !admin && "rgba(13, 110, 253, 1)" || admin && "rgb(216,0,0)",
                     borderColor: "rgba(0, 0, 0, 1)",
                     borderWidth: 2
                 }
@@ -64,9 +71,16 @@ function BarChart({filterDate = new Date(), yearView = false, admin = false}) {
     const generateChartDataByYear = (filteredReservations) => {
         let values = new Array(12).fill(0);
 
-        for (const reservation of filteredReservations) {
-            const month = new Date(reservation.date).getMonth();
-            values[month] += 1;
+        if (!countView) {
+            for (const reservation of filteredReservations) {
+                const month = new Date(reservation.date).getMonth();
+                values[month] += 1;
+            }
+        } else {
+            for (const reservation of filteredReservations) {
+                const month = new Date(reservation.date).getMonth();
+                values[month] += reservation.count;
+            }
         }
 
         const chartData = {
@@ -77,8 +91,11 @@ function BarChart({filterDate = new Date(), yearView = false, admin = false}) {
 
             datasets: [
                 {
-                    label: "Reservierungen",
+                    label: countView && "Personen" || !countView && "Reservierungen",
                     data: values,
+                    backgroundColor: countView && "rgb(253,205,13)" || !countView && "rgba(13, 110, 253, 1)",
+                    borderColor: "rgba(0, 0, 0, 1)",
+                    borderWidth: 2
                 }
             ]
         };

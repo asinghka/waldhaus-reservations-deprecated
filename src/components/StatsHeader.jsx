@@ -15,9 +15,11 @@ function StatsHeader() {
     ];
 
     const [yearView, setYearView] = useState(false);
+    const [countView, setCountView] = useState(false);
     const [filterDate, setFilterDate] = useState(new Date());
 
     const handleYearView = () => setYearView(!yearView);
+    const handleCountView = () => setCountView(!countView);
 
     return (
         <>
@@ -48,8 +50,9 @@ function StatsHeader() {
                     />}
                 </Localization>
                 <Form.Switch className="ms-5 mt-2" label="Jahresübersicht" onChange={handleYearView} />
+                <Form.Switch className="ms-auto ms-5 mt-2" label="Personenanzahl" onChange={handleCountView} />
             </Form>
-            <BarChart filterDate={filterDate} yearView={yearView} height={100} />
+            <BarChart filterDate={filterDate} yearView={yearView} countView={countView} height={100} />
         </>
     )
 }
