@@ -51,8 +51,17 @@ function StatsHeader() {
                         }}
                     />}
                 </Localization>
-                <Form.Switch className="ms-5 mt-2" label="Jahresübersicht" onChange={handleYearView}/>
-                <Form.Switch className="ms-auto ms-5 mt-2" label="Personenanzahl" onChange={handleCountView}/>
+                <div className="d-flex me-auto ms-5 mt-2">
+                    <label className="me-2">Monatsübersicht</label>
+                    <Form.Switch onChange={handleYearView}/>
+                    <label className="ms-2">Jahresübersicht</label>
+                </div>
+                <div className="d-flex ms-auto mt-2">
+                    <label className="me-2">Reservierungen</label>
+                    <Form.Switch onChange={handleCountView}/>
+                    <label className="ms-2">Personen</label>
+                </div>
+
             </Form>
             <BarChart filterDate={filterDate} yearView={yearView} countView={countView} height={100}/>
         </>
