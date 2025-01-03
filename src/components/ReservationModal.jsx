@@ -63,10 +63,10 @@ const ReservationModal = ({ showModal, handleClose, reservations, initialReserva
         combinedDate.setHours(time.getHours(), time.getMinutes(), time.getSeconds(), 0);
 
         const startDate = new Date(combinedDate);
-        startDate.setMinutes(combinedDate.getMinutes() - 16);
+        startDate.setMinutes(combinedDate.getMinutes() - 15);
 
         const endDate = new Date(combinedDate);
-        endDate.setMinutes(combinedDate.getMinutes() + 16);
+        endDate.setMinutes(combinedDate.getMinutes() + 15);
 
         const filteredReservations = reservations.filter((reservation) => {
             if (initialReservations && initialReservations.id === reservation.id) return false;
@@ -74,7 +74,7 @@ const ReservationModal = ({ showModal, handleClose, reservations, initialReserva
 
             const reservationDate = new Date(reservation.date);
 
-            return reservationDate > startDate && reservationDate < endDate;
+            return reservationDate >= startDate && reservationDate <= endDate;
         });
 
         let sum = 0;
@@ -85,15 +85,15 @@ const ReservationModal = ({ showModal, handleClose, reservations, initialReserva
 
         if (sum >= 20) {
             setCurrentCapacity(capacity.RED);
-            setCapacityMessage(sum + ' Personen zu ähnlicher Uhrzeit anwesend!')
+            setCapacityMessage(sum + ' Personen erscheinen zu ähnlicher Uhrzeit!')
         }
         else if (sum >= 15) {
             setCurrentCapacity(capacity.YELLOW);
-            setCapacityMessage(sum + ' Personen zu ähnlicher Uhrzeit anwesend.')
+            setCapacityMessage(sum + ' Personen erscheinen zu ähnlicher Uhrzeit.')
         }
         else {
             setCurrentCapacity(capacity.GREEN);
-            setCapacityMessage(sum + ' Personen zu ähnlicher Uhrzeit anwesend.');
+            setCapacityMessage(sum + ' Personen erscheinen zu ähnlicher Uhrzeit.');
         }
     }, [date, time, count, reservations, initialReservations])
 
