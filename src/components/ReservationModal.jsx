@@ -59,8 +59,13 @@ const ReservationModal = ({ showModal, handleClose, reservations, initialReserva
     }, [date, time, count]);
 
     const setCapacity = useCallback(() => {
-        const combinedDate = new Date(date);
-        combinedDate.setHours(time.getHours(), time.getMinutes(), time.getSeconds(), 0);
+        let combinedDate = new Date();
+        if (date) {
+            combinedDate = new Date(date);
+        }
+        if (time) {
+            combinedDate.setHours(time.getHours(), time.getMinutes(), time.getSeconds(), 0);
+        }
 
         const startDate = new Date(combinedDate);
         startDate.setMinutes(combinedDate.getMinutes() - 15);
@@ -124,6 +129,12 @@ const ReservationModal = ({ showModal, handleClose, reservations, initialReserva
             return false;
         }
 
+        if (!time) {
+            setAlertMessage('Bitte Uhrzeit eingeben.');
+            setValid(false);
+            return false;
+        }
+
         if (!count) {
             setAlertMessage('Bitte Personenanzahl eingeben.');
             setValid(false);
@@ -136,7 +147,7 @@ const ReservationModal = ({ showModal, handleClose, reservations, initialReserva
             return false;
         }
 
-        if (count < 1 || count > 80) {
+        if (count < 1 || count > 70) {
             setAlertMessage('Bitte gültige Personenanzahl eingeben.');
             setValid(false);
             return false;

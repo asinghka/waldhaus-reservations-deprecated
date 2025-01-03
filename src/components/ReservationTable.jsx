@@ -9,6 +9,8 @@ function ReservationTable({filterReservation, filterToday = false, filterDate, s
 
     useEffect(() => {
         fetchReservations();
+        const intervalId = setInterval(fetchReservations, 60000);
+        return () => clearInterval(intervalId);
     }, []);
 
     const fetchReservations = async () => {
@@ -35,10 +37,15 @@ function ReservationTable({filterReservation, filterToday = false, filterDate, s
     const isCurrentReservations = (reservation) => {
         if (!filterToday) return false;
 
-        const reservationTime = new Date(reservation.date);
-        const now = new Date();
+        const reservationDate = new Date(reservation.date);
 
-        return reservationTime > now.setMinutes(now.getMinutes() - 15) && reservationTime < now.setMinutes(now.getMinutes() + 15);
+        const startDate = new Date();
+        startDate.setMinutes(startDate.getMinutes() - 15);
+
+        const endDate = new Date();
+        endDate.setMinutes(endDate.getMinutes() + 15);
+
+        return reservationDate > startDate && reservationDate < endDate;
     };
 
     const filteredReservations = reservations.filter((reservation) => {
