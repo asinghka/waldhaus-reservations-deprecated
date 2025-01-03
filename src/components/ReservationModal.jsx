@@ -1,12 +1,12 @@
-import {useEffect, useState} from 'react';
+import {useCallback, useEffect, useState} from 'react';
 import DatePicker from 'react-widgets/DatePicker';
 import TimeInput from "react-widgets/TimeInput";
 import NumberPicker from "react-widgets/NumberPicker";
-import {Modal, Button, Form, Alert} from 'react-bootstrap';
+import {Alert, Button, Form, Modal} from 'react-bootstrap';
 import Localization from "react-widgets/Localization";
 import {DateLocalizer} from "react-widgets/IntlLocalizer";
 
-const ReservationModal = ({ showModal, handleClose, initialReservations, initialDate, admin = false }) => {
+const ReservationModal = ({ showModal, handleClose, reservations, initialReservations, initialDate, admin = false }) => {
 
     const defaultTime = new Date();
     defaultTime.setHours(18, 0, 0, 0);
@@ -21,7 +21,18 @@ const ReservationModal = ({ showModal, handleClose, initialReservations, initial
     const [deleted, setDeleted] = useState(0);
 
     const [edit, setEdit] = useState(true);
+
+    const capacity = Object.freeze({
+        GREEN: 0,
+        YELLOW: 1,
+        RED: 2
+    })
+
+    const [currentCapacity, setCurrentCapacity] = useState(capacity.GREEN);
+    const [capacityMessage, setCapacityMessage] = useState('');
+
     const [valid, setValid] = useState(true);
+    const [alertMessage, setAlertMessage] = useState('');
 
     useEffect(() => {
         if (initialReservations) {
@@ -39,6 +50,53 @@ const ReservationModal = ({ showModal, handleClose, initialReservations, initial
         }
     }, [initialDate, initialReservations]);
 
+    useEffect(() => {
+        setCapacity();
+    }, []);
+
+    useEffect(() => {
+        setCapacity();
+    }, [date, time, count]);
+
+    const setCapacity = useCallback(() => {
+        const combinedDate = new Date(date);
+        combinedDate.setHours(time.getHours(), time.getMinutes(), time.getSeconds(), 0);
+
+        const startDate = new Date(combinedDate);
+        startDate.setMinutes(combinedDate.getMinutes() - 16);
+
+        const endDate = new Date(combinedDate);
+        endDate.setMinutes(combinedDate.getMinutes() + 16);
+
+        const filteredReservations = reservations.filter((reservation) => {
+            if (initialReservations && initialReservations.id === reservation.id) return false;
+            if (reservation.deleted) return false;
+
+            const reservationDate = new Date(reservation.date);
+
+            return reservationDate > startDate && reservationDate < endDate;
+        });
+
+        let sum = 0;
+        for (const reservation of filteredReservations) {
+            sum += reservation.count;
+        }
+        sum += count;
+
+        if (sum >= 20) {
+            setCurrentCapacity(capacity.RED);
+            setCapacityMessage(sum + ' Personen zu ähnlicher Uhrzeit anwesend!')
+        }
+        else if (sum >= 15) {
+            setCurrentCapacity(capacity.YELLOW);
+            setCapacityMessage(sum + ' Personen zu ähnlicher Uhrzeit anwesend.')
+        }
+        else {
+            setCurrentCapacity(capacity.GREEN);
+            setCapacityMessage(sum + ' Personen zu ähnlicher Uhrzeit anwesend.');
+        }
+    }, [date, time, count, reservations, initialReservations])
+
     const resetForm = () => {
         setId(null);
         setName('');
@@ -52,8 +110,6 @@ const ReservationModal = ({ showModal, handleClose, initialReservations, initial
         setValid(true);
         setDeleted(0);
     };
-
-    const [alertMessage, setAlertMessage] = useState('');
 
     const validateForm = () => {
         if (!name) {
@@ -133,6 +189,11 @@ const ReservationModal = ({ showModal, handleClose, initialReservations, initial
                 {(!admin && !initialReservations && <Modal.Title>Neue Reservierung</Modal.Title>)}
             </Modal.Header>
             <Modal.Body>
+                {edit && <Alert variant={
+                    (currentCapacity === capacity.GREEN && "success") ||
+                    (currentCapacity === capacity.YELLOW && "warning") ||
+                    (currentCapacity === capacity.RED && "danger")
+                }>{capacityMessage}</Alert>}
                 {!valid && <Alert variant="danger">{alertMessage}</Alert>}
                 <Localization date={new DateLocalizer({culture: "de"})}>
                     <Form>
@@ -151,7 +212,7 @@ const ReservationModal = ({ showModal, handleClose, initialReservations, initial
                             <DatePicker
                                 disabled={!edit}
                                 value={date}
-                                min={new Date(date)}
+                                min={new Date()}
                                 valueEditFormat={{ dateStyle: "short" }}
                                 valueDisplayFormat={{ dateStyle: "long" }}
                                 onChange={(selectedDate) => setDate(selectedDate)}
@@ -170,6 +231,8 @@ const ReservationModal = ({ showModal, handleClose, initialReservations, initial
                             <NumberPicker
                                 disabled={!edit}
                                 value={count}
+                                min={1}
+                                max={70}
                                 precision={0}
                                 onChange={(count) => setCount(count)}
                             />

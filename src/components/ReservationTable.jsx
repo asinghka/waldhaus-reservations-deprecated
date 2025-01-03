@@ -2,9 +2,24 @@ import {Table} from "react-bootstrap";
 import {useEffect, useState} from "react";
 import ReservationModal from "./ReservationModal.jsx";
 
-function ReservationTable({fetchReservations, reservations, filterToday = false, filterDate, showModal, setShowModal, admin = false}) {
+function ReservationTable({filterTerm, filterToday = false, filterDate, showModal, setShowModal, admin = false}) {
 
+    const [reservations, setReservations] = useState([]);
     const [selectedReservation, setSelectedReservation] = useState(null);
+
+    useEffect(() => {
+        fetchReservations();
+    }, []);
+
+    const fetchReservations = async () => {
+        try {
+            const reservations = await window.electron.getReservations();
+            const sortedReservations = reservations.sort((a, b) => new Date(a.date).getTime() - new Date(b.date).getTime());
+            setReservations(sortedReservations);
+        } catch (error) {
+            console.error('Error fetching reservations:', error);
+        }
+    };
 
     const handleClose = () => {
         setSelectedReservation(null);
@@ -26,13 +41,32 @@ function ReservationTable({fetchReservations, reservations, filterToday = false,
         return reservationTime > now.setMinutes(now.getMinutes() - 15) && reservationTime < now.setMinutes(now.getMinutes() + 15);
     };
 
+    const filteredReservations = reservations.filter((reservation) => {
+        if (admin && !reservation.deleted) return false;
+        if (!admin && reservation.deleted) return false;
+
+        let isFilterDate;
+
+        if (!filterToday) {
+            isFilterDate = new Date(filterDate).toLocaleDateString('de-DE').split('T')[0] === new Date(reservation.date).toLocaleDateString('de-DE').split('T')[0];
+        } else {
+            isFilterDate = new Date().toLocaleDateString('de-DE').split('T')[0] === new Date(reservation.date).toLocaleDateString('de-DE').split('T')[0];
+        }
+
+        return (
+            reservation.name.toLowerCase().includes(filterTerm.toLowerCase()) && isFilterDate
+        );
+    });
+
     const sumPeople = () => {
         let sum = 0;
 
         for (const reservation of reservations) {
-            sum += reservation.count;
+            const isFilterDate = new Date(filterDate).toLocaleDateString('de-DE').split('T')[0] === new Date(reservation.date).toLocaleDateString('de-DE').split('T')[0];
+            if (isFilterDate) {
+                sum += reservation.count;
+            }
         }
-
         return sum;
     }
 
@@ -48,7 +82,7 @@ function ReservationTable({fetchReservations, reservations, filterToday = false,
                 </tr>
                 </thead>
                 <tbody>
-                {reservations.map((reservation) => {
+                {filteredReservations.map((reservation) => {
                     const current = isCurrentReservations(reservation);
 
                     return (
@@ -77,6 +111,7 @@ function ReservationTable({fetchReservations, reservations, filterToday = false,
             <ReservationModal
                 showModal={showModal}
                 handleClose={handleClose}
+                reservations={reservations}
                 initialDate={filterDate}
                 initialReservations={selectedReservation}
                 admin={admin}

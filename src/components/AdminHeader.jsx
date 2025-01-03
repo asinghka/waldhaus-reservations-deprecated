@@ -23,42 +23,17 @@ function AdminHeader() {
     const month = parseInt(params.get("month"), 10) - 1 || new Date().getMonth();
     const day = parseInt(params.get("day"), 10) || new Date().getDate();
 
-    const [reservations, setReservations] = useState([]);
     const [showModal, setShowModal] = useState(false);
 
     const [graphView, setGraphView] = useState(false);
+
     const [filterDate, setFilterDate] = useState(new Date());
     const [filterTerm, setFilterTerm] = useState("");
-
-    useEffect(() => {
-        fetchReservations();
-    }, []);
 
     useEffect(() => {
         setFilterDate(new Date(year, month, day));
         setGraphView(false);
     }, [year, month, day]);
-
-    const fetchReservations = async () => {
-        try {
-            const reservations = await window.electron.getReservations();
-            const sortedReservations = reservations.sort((a, b) => new Date(a.date).getTime() - new Date(b.date).getTime());
-            setReservations(sortedReservations);
-        } catch (error) {
-            console.error('Error fetching reservations:', error);
-        }
-    };
-
-    const filteredReservations = reservations.filter((reservation) => {
-        if (!reservation.deleted) return false;
-
-        const isFilterDate = filterDate.toLocaleDateString('de-DE').split('T')[0] === new Date(reservation.date).toLocaleDateString('de-DE').split('T')[0];
-
-        return (
-            reservation.name.toLowerCase().includes(filterTerm.toLowerCase()) && isFilterDate
-        );
-    });
-
 
     const handleGraphView = () => setGraphView(!graphView);
 
@@ -106,8 +81,7 @@ function AdminHeader() {
             </Form>
 
             {!graphView && <ReservationTable
-                fetchReservations={fetchReservations}
-                reservations={filteredReservations}
+                filterTerm={filterTerm}
                 filterDate={filterDate}
                 showModal={showModal}
                 setShowModal={setShowModal}

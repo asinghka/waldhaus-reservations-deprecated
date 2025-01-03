@@ -16,8 +16,6 @@ function ReservationHeader({filterToday = false}) {
     const month = parseInt(params.get("month"), 10) - 1 || new Date().getMonth();
     const day = parseInt(params.get("day"), 10) || new Date().getDate();
 
-    const [reservations, setReservations] = useState([]);
-
     const [filterTerm, setFilterTerm] = useState("");
     const [filterDate, setFilterDate] = useState(new Date());
 
@@ -25,38 +23,8 @@ function ReservationHeader({filterToday = false}) {
     const [showModal, setShowModal] = useState(false);
 
     useEffect(() => {
-        fetchReservations();
-    }, []);
-
-    useEffect(() => {
         setFilterDate(new Date(year, month, day));
     }, [year, month, day]);
-
-    const fetchReservations = async () => {
-        try {
-            const reservations = await window.electron.getReservations();
-            const sortedReservations = reservations.sort((a, b) => new Date(a.date).getTime() - new Date(b.date).getTime());
-            setReservations(sortedReservations);
-        } catch (error) {
-            console.error('Error fetching reservations:', error);
-        }
-    };
-
-    const filteredReservations = reservations.filter((reservation) => {
-        if (reservation.deleted) return false;
-
-        let isFilterDate;
-
-        if (!filterToday) {
-            isFilterDate = new Date(filterDate).toLocaleDateString('de-DE').split('T')[0] === new Date(reservation.date).toLocaleDateString('de-DE').split('T')[0];
-        } else {
-            isFilterDate = new Date().toLocaleDateString('de-DE').split('T')[0] === new Date(reservation.date).toLocaleDateString('de-DE').split('T')[0];
-        }
-
-        return (
-            reservation.name.toLowerCase().includes(filterTerm.toLowerCase()) && isFilterDate
-        );
-    });
 
     const handleShow = () => setShowModal(true);
 
@@ -110,9 +78,8 @@ function ReservationHeader({filterToday = false}) {
             {
                 !graphView && (
                     <ReservationTable
-                        fetchReservations={fetchReservations}
-                        reservations={filteredReservations}
                         filterToday={filterToday}
+                        filterTerm={filterTerm}
                         filterDate={filterDate}
                         showModal={showModal}
                         setShowModal={setShowModal}
