@@ -44,7 +44,7 @@ function LineChart({filterDate = new Date()}) {
     })
 
     const generateChartData = (filteredReservations) => {
-        let values = new Array(18).fill(0);
+        let values = new Array(19).fill(0);
 
         for (const reservation of filteredReservations) {
             const hour = new Date(reservation.date).getHours() - 11;
@@ -55,7 +55,7 @@ function LineChart({filterDate = new Date()}) {
         }
 
         const chartData = {
-            labels: Array.from({ length: 18 }, (_, i) => {
+            labels: Array.from({ length: 19 }, (_, i) => {
                 const hour = 11 + Math.floor(i / 2);
                 const minutes = (i % 2) * 30;
                 const hourStr = hour.toString().padStart(2, '0');
