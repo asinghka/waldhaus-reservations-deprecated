@@ -109,14 +109,11 @@ function BarChart({filterDate = new Date(), yearView = false, countView = false,
 
     const options = {
         responsive: true,
-        animation: {
-            duration: 300,
-            easing: 'easeInOutQuad',
-        },
         plugins: {
             legend: {
                 display: true,
                 position: 'top',
+                onClick: null
             },
         },
         scales: {

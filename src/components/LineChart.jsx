@@ -64,7 +64,7 @@ function LineChart({filterDate = new Date()}) {
             }),
             datasets: [
                 {
-                    label: "Personen",
+                    label: "geschätzte Anzahl an Personen",
                     data: values,
                     backgroundColor: "rgb(51,239,0)",
                     borderColor: "rgba(0, 0, 0, 1)",
@@ -89,6 +89,7 @@ function LineChart({filterDate = new Date()}) {
             legend: {
                 display: true,
                 position: 'top',
+                onClick: null
             },
         },
         scales: {
