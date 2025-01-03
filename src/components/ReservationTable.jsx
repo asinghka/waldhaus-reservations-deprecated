@@ -2,7 +2,7 @@ import {Table} from "react-bootstrap";
 import {useEffect, useState} from "react";
 import ReservationModal from "./ReservationModal.jsx";
 
-function ReservationTable({filterTerm, filterToday = false, filterDate, showModal, setShowModal, admin = false}) {
+function ReservationTable({filterReservation, filterToday = false, filterDate, showModal, setShowModal, admin = false}) {
 
     const [reservations, setReservations] = useState([]);
     const [selectedReservation, setSelectedReservation] = useState(null);
@@ -42,20 +42,7 @@ function ReservationTable({filterTerm, filterToday = false, filterDate, showModa
     };
 
     const filteredReservations = reservations.filter((reservation) => {
-        if (admin && !reservation.deleted) return false;
-        if (!admin && reservation.deleted) return false;
-
-        let isFilterDate;
-
-        if (!filterToday) {
-            isFilterDate = new Date(filterDate).toLocaleDateString('de-DE').split('T')[0] === new Date(reservation.date).toLocaleDateString('de-DE').split('T')[0];
-        } else {
-            isFilterDate = new Date().toLocaleDateString('de-DE').split('T')[0] === new Date(reservation.date).toLocaleDateString('de-DE').split('T')[0];
-        }
-
-        return (
-            reservation.name.toLowerCase().includes(filterTerm.toLowerCase()) && isFilterDate
-        );
+        return filterReservation(reservation);
     });
 
     const sumPeople = () => {

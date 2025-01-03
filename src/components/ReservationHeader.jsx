@@ -33,6 +33,22 @@ function ReservationHeader({filterToday = false}) {
         setFilterTerm('');
     }
 
+    const filterReservation = (reservation) => {
+        if (reservation.deleted) return false;
+
+        let isFilterDate;
+
+        if (!filterToday) {
+            isFilterDate = new Date(filterDate).toLocaleDateString('de-DE').split('T')[0] === new Date(reservation.date).toLocaleDateString('de-DE').split('T')[0];
+        } else {
+            isFilterDate = new Date().toLocaleDateString('de-DE').split('T')[0] === new Date(reservation.date).toLocaleDateString('de-DE').split('T')[0];
+        }
+
+        return (
+            reservation.name.toLowerCase().includes(filterTerm.toLowerCase()) && isFilterDate
+        );
+    };
+
     return (
         <>
             <div>
@@ -78,8 +94,8 @@ function ReservationHeader({filterToday = false}) {
             {
                 !graphView && (
                     <ReservationTable
+                        filterReservation={filterReservation}
                         filterToday={filterToday}
-                        filterTerm={filterTerm}
                         filterDate={filterDate}
                         showModal={showModal}
                         setShowModal={setShowModal}
