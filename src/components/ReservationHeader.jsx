@@ -55,9 +55,9 @@ function ReservationHeader({filterToday = false}) {
                 <Form className="mb-3 d-flex">
                     <Form.Group controlId="nameFilter">
                         <Form.Control
-                            className="ms-auto"
+                            className="me-auto"
                             disabled={graphView}
-                            style={{ minWidth: '300px' }}
+                            style={{ minWidth: '220px' }}
                             type="text"
                             placeholder="Nach Namen filtern"
                             value={filterTerm}
@@ -68,8 +68,8 @@ function ReservationHeader({filterToday = false}) {
                         <Form.Group controlId="dateFilter">
                         {!filterToday &&
                             <DatePicker
-                                style={{ width: '250px' }}
-                                className="flex ms-3"
+                                style={{ width: '220px' }}
+                                className="me-auto ms-3"
                                 defaultValue={new Date()}
                                 value={filterDate}
                                 disabled={filterToday}
@@ -79,15 +79,15 @@ function ReservationHeader({filterToday = false}) {
                             />}
                             {filterToday &&
                             <Form.Control
-                                style={{ width: '250px' }}
+                                style={{ width: '220px' }}
                                 type="text"
-                                className="flex ms-3"
+                                className="me-auto ms-3"
                                 placeholder={"Heute am " + filterDate.toLocaleDateString('de-DE').split('T')[0]}
                                 disabled={true}
                             />}
                         </Form.Group>
                     </Localization>
-                    <Form.Switch checked={graphView} className="ms-5 mt-2" label="Tagesübersicht" onChange={handleGraph} />
+                    <Form.Switch checked={graphView} className="mx-auto mt-2" label="Tagesübersicht" onChange={handleGraph} />
                     {<Button variant={graphView ? "secondary" : "primary"} className="ms-auto" disabled={graphView} onClick={handleShow}>Neue Reservierung</Button>}
                 </Form>
             </div>
