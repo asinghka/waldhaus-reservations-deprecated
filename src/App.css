@@ -33,3 +33,21 @@ h5 {
 th {
   width: 200px;
 }
+
+.form-control-success:disabled {
+  background-color: #d4edda;
+  color: #155724;
+  border-color: #28a745;
+}
+
+.form-control-warning:disabled {
+  background-color: #fff3cd;
+  color: #856404;
+  border-color: #ffc107;
+}
+
+.form-control-danger:disabled {
+  background-color: #f8d7da;
+  color: #721c24;
+  border-color: #dc3545;
+}

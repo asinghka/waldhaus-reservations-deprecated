@@ -2,7 +2,7 @@ import {useCallback, useEffect, useState} from 'react';
 import DatePicker from 'react-widgets/DatePicker';
 import TimeInput from "react-widgets/TimeInput";
 import NumberPicker from "react-widgets/NumberPicker";
-import {Alert, Button, Form, Modal} from 'react-bootstrap';
+import {Alert, Button, Col, Form, Modal, Row} from 'react-bootstrap';
 import Localization from "react-widgets/Localization";
 import {DateLocalizer} from "react-widgets/IntlLocalizer";
 
@@ -90,15 +90,15 @@ const ReservationModal = ({ showModal, handleClose, reservations, initialReserva
 
         if (sum >= 20) {
             setCurrentCapacity(capacity.RED);
-            setCapacityMessage(sum + ' Personen erscheinen zu ähnlicher Uhrzeit!')
+            setCapacityMessage('Hohe Auslastung (' + sum + ' Personen erscheinen zu ähnlicher Uhrzeit!)')
         }
         else if (sum >= 15) {
             setCurrentCapacity(capacity.YELLOW);
-            setCapacityMessage(sum + ' Personen erscheinen zu ähnlicher Uhrzeit.')
+            setCapacityMessage('Mittlere Auslastung (' + sum + ' Personen erscheinen zu ähnlicher Uhrzeit)')
         }
         else {
             setCurrentCapacity(capacity.GREEN);
-            setCapacityMessage(sum + ' Personen erscheinen zu ähnlicher Uhrzeit.');
+            setCapacityMessage('Geringe Auslastung (' + sum + ' Personen erscheinen zu ähnlicher Uhrzeit)');
         }
     }, [date, time, count, reservations, initialReservations])
 
@@ -193,81 +193,106 @@ const ReservationModal = ({ showModal, handleClose, reservations, initialReserva
     }
 
     return (
-        <Modal centered show={showModal} onHide={handleClose}>
+        <Modal centered show={showModal} onHide={handleClose} size="lg">
             <Modal.Header closeButton>
                 {(admin && initialReservations && <Modal.Title>Gelöschte Reservierung</Modal.Title>)}
                 {(!admin && initialReservations && <Modal.Title>Bestehende Reservierung</Modal.Title>)}
                 {(!admin && !initialReservations && <Modal.Title>Neue Reservierung</Modal.Title>)}
             </Modal.Header>
             <Modal.Body>
-                {edit && <Alert variant={
-                    (currentCapacity === capacity.GREEN && "success") ||
-                    (currentCapacity === capacity.YELLOW && "warning") ||
-                    (currentCapacity === capacity.RED && "danger")
-                }>{capacityMessage}</Alert>}
                 {!valid && <Alert variant="danger">{alertMessage}</Alert>}
                 <Localization date={new DateLocalizer({culture: "de"})}>
                     <Form>
-                        <Form.Group controlId="formName">
-                            <Form.Label>Name (<span style={{ color: "darkred" }}>*</span>)</Form.Label>
-                            <Form.Control
-                                autoFocus
-                                disabled={!edit}
-                                type="text"
-                                value={name}
-                                onChange={(e) => setName(e.target.value)}
-                            />
-                        </Form.Group>
-                        <Form.Group className="pt-2" controlId="formDate">
-                            <Form.Label>Datum (<span style={{ color: "darkred" }}>*</span>)</Form.Label>
-                            <DatePicker
-                                disabled={!edit}
-                                value={date}
-                                min={new Date()}
-                                valueEditFormat={{ dateStyle: "short" }}
-                                valueDisplayFormat={{ dateStyle: "long" }}
-                                onChange={(selectedDate) => setDate(selectedDate)}
-                            />
-                        </Form.Group>
-                        <Form.Group className="pt-2" controlId="formTime">
-                            <Form.Label>Uhrzeit (<span style={{ color: "darkred" }}>*</span>)</Form.Label><br/>
-                            <TimeInput
-                                disabled={!edit}
-                                value={time}
-                                onChange={(selectedTime) => setTime(selectedTime)}
-                            />
-                        </Form.Group>
-                        <Form.Group className="pt-2" controlId="formCount">
-                            <Form.Label>Anzahl Personen (<span style={{ color: "darkred" }}>*</span>)</Form.Label>
-                            <NumberPicker
-                                disabled={!edit}
-                                value={count}
-                                min={1}
-                                max={70}
-                                precision={0}
-                                onChange={(count) => setCount(count)}
-                            />
-                        </Form.Group>
-                        <Form.Group className="pt-2" controlId="formContact">
-                            <Form.Label>Kontaktdaten</Form.Label>
-                            <Form.Control
-                                disabled={!edit}
-                                type="text"
-                                value={contact}
-                                onChange={(e) => setContact(e.target.value)}
-                            />
-                        </Form.Group>
-                        <Form.Group className="pt-2" controlId="formNotes">
-                            <Form.Label>Anmerkungen</Form.Label>
-                            <Form.Control
-                                as="textarea"
-                                rows={4}
-                                disabled={!edit}
-                                type="text"
-                                value={notes}
-                                onChange={(e) => setNotes(e.target.value)}
-                            />
-                        </Form.Group>
+                        <Row>
+                            <Col xs={4}>
+                                <Form.Group controlId="formName">
+                                <Form.Label>Name (<span style={{ color: "darkred" }}>*</span>)</Form.Label>
+                                <Form.Control
+                                    disabled={!edit}
+                                    type="text"
+                                    value={name}
+                                    onChange={(e) => setName(e.target.value)}
+                                />
+                            </Form.Group>
+                            </Col>
+                            <Col xs={4}>
+                                <Form.Group controlId="formDate">
+                                <Form.Label>Datum (<span style={{ color: "darkred" }}>*</span>)</Form.Label>
+                                <DatePicker
+                                    disabled={!edit}
+                                    value={date}
+                                    min={new Date()}
+                                    valueEditFormat={{ dateStyle: "short" }}
+                                    valueDisplayFormat={{ dateStyle: "long" }}
+                                    onChange={(selectedDate) => setDate(selectedDate)}
+                                />
+                            </Form.Group>
+                            </Col>
+                            <Col xs={2}>
+                                <Form.Group controlId="formTime">
+                                <Form.Label>Uhrzeit (<span style={{ color: "darkred" }}>*</span>)</Form.Label><br/>
+                                <TimeInput
+                                    disabled={!edit}
+                                    value={time}
+                                    onChange={(selectedTime) => setTime(selectedTime)}
+                                />
+                            </Form.Group>
+                            </Col>
+                        </Row>
+                        <Row>
+                            <Col xs={4}>
+                                <Form.Group style={{ width: '220px' }} className="pt-2" controlId="formCount">
+                                    <Form.Label>Anzahl Personen (<span style={{ color: "darkred" }}>*</span>)</Form.Label>
+                                    <NumberPicker
+                                        disabled={!edit}
+                                        value={count}
+                                        min={1}
+                                        max={70}
+                                        precision={0}
+                                        onChange={(count) => setCount(count)}
+                                    />
+                                </Form.Group>
+                            </Col>
+                            <Col xs={8}>
+                                <Form.Group className="pt-3">
+                                    <Form.Label></Form.Label>
+                                    <Form.Control
+                                        disabled={true}
+                                        type="text"
+                                        placeholder={capacityMessage}
+                                        className={
+                                            currentCapacity === capacity.GREEN ? 'form-control-success'
+                                            : currentCapacity === capacity.YELLOW ? 'form-control-warning'
+                                            : 'form-control-danger'
+                                        }
+                                    />
+                                </Form.Group>
+                            </Col>
+                        </Row>
+                        <Row>
+                            <Form.Group className="pt-3" controlId="formContact">
+                                <Form.Label>Kontaktdaten</Form.Label>
+                                <Form.Control
+                                    disabled={!edit}
+                                    type="text"
+                                    value={contact}
+                                    onChange={(e) => setContact(e.target.value)}
+                                />
+                            </Form.Group>
+                        </Row>
+                        <Row>
+                            <Form.Group className="pt-3" controlId="formNotes">
+                                <Form.Label>Anmerkungen</Form.Label>
+                                <Form.Control
+                                    as="textarea"
+                                    rows={4}
+                                    disabled={!edit}
+                                    type="text"
+                                    value={notes}
+                                    onChange={(e) => setNotes(e.target.value)}
+                                />
+                            </Form.Group>
+                        </Row>
                     </Form>
                 </Localization>
             </Modal.Body>
