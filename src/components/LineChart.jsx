@@ -8,7 +8,8 @@ import {
     LinearScale,
     Title,
     Tooltip,
-    PointElement
+    PointElement,
+    Chart
 } from "chart.js";
 import {useNavigate} from "react-router-dom";
 
@@ -102,22 +103,16 @@ function LineChart({filterDate = new Date()}) {
                 },
                 grid: {
                     color: function (context) {
-                        if (context.tick.value === 15) {
-                            return "rgb(182,182,0)";
-                        } else if (context.tick.value === 20) {
+                        if (context.tick.value === 20) {
                             return "rgb(195,0,0)";
-                        } else {
-                            return "rgb(0, 0, 0)"
                         }
+                        return Chart.defaults.borderColor;
                     },
                     lineWidth: function (context) {
-                        if (context.tick.value === 15) {
+                        if (context.tick.value === 20) {
                             return 2;
-                        } else if (context.tick.value === 20) {
-                            return 2;
-                        } else {
-                            return 1
                         }
+                        return 1;
                     }
                 }
             },
