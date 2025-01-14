@@ -6,6 +6,7 @@ function ReservationTable({filterReservation, filterToday = false, filterDate, s
 
     const [reservations, setReservations] = useState([]);
     const [selectedReservation, setSelectedReservation] = useState(null);
+    const [showLunchBreakDivider, setShowLunchBreakDivider] = useState(false);
 
     useEffect(() => {
         fetchReservations();
@@ -52,6 +53,28 @@ function ReservationTable({filterReservation, filterToday = false, filterDate, s
         return filterReservation(reservation);
     });
 
+    const isAfternoonReservation = (reservation) => {
+        const reservationDate = new Date(reservation.date);
+        return reservationDate.getHours() < 17;
+    }
+
+    useEffect(() => {
+        let afternoon = false;
+        let evening = false;
+
+        for (const reservation of filteredReservations) {
+            const reservationDate = new Date(reservation.date);
+            if (reservationDate.getHours() <= 16) {
+                afternoon = true;
+            }
+            if (reservationDate.getHours() >= 17) {
+                evening = true;
+            }
+        }
+
+        setShowLunchBreakDivider(afternoon && evening);
+    }, [filteredReservations])
+
     const sumPeople = () => {
         let sum = 0;
 
@@ -76,26 +99,50 @@ function ReservationTable({filterReservation, filterToday = false, filterDate, s
                 </tr>
                 </thead>
                 <tbody>
-                {filteredReservations.map((reservation) => {
+                {
+                    filteredReservations.map((reservation) => {
                     const current = isCurrentReservations(reservation);
-
-                    return (
-                        <tr className={current ? "table-success" : ""} key={reservation.id} onClick={() => handleRowClick(reservation)} style={{ cursor: 'pointer' }}>
-                            <td>{reservation.name}</td>
-                            <td>
-                                {new Date(reservation.date).toLocaleDateString('de-DE')}
-                            </td>
-                            <td>
-                                {new Date(reservation.date).toLocaleTimeString('de-DE', { hour: "2-digit", minute: "2-digit" })}
-                            </td>
-                            <td>{reservation.count}</td>
-                        </tr>
-                    );
+                    if (isAfternoonReservation(reservation)) {
+                        return (
+                            <tr className={current ? "table-success" : ""} key={reservation.id} onClick={() => handleRowClick(reservation)} style={{ cursor: 'pointer' }}>
+                                <td>{reservation.name}</td>
+                                <td>
+                                    {new Date(reservation.date).toLocaleDateString('de-DE')}
+                                </td>
+                                <td>
+                                    {new Date(reservation.date).toLocaleTimeString('de-DE', { hour: "2-digit", minute: "2-digit" })}
+                                </td>
+                                <td>{reservation.count}</td>
+                            </tr>
+                        );
+                    }
                 })}
-                {!admin && reservations.length > 0 &&
+                {showLunchBreakDivider && (
                     <tr className="table-secondary">
-                        <td/>
-                        <td/>
+                        <th colSpan={4}>Pause</th>
+                    </tr>
+                )}
+                {
+                    filteredReservations.map((reservation) => {
+                    const current = isCurrentReservations(reservation);
+                    if (!isAfternoonReservation(reservation)) {
+                        return (
+                            <tr className={current ? "table-success" : ""} key={reservation.id} onClick={() => handleRowClick(reservation)} style={{ cursor: 'pointer' }}>
+                                <td>{reservation.name}</td>
+                                <td>
+                                    {new Date(reservation.date).toLocaleDateString('de-DE')}
+                                </td>
+                                <td>
+                                    {new Date(reservation.date).toLocaleTimeString('de-DE', { hour: "2-digit", minute: "2-digit" })}
+                                </td>
+                                <td>{reservation.count}</td>
+                            </tr>
+                        );
+                    }
+                })}
+                {!admin &&
+                    <tr className="table-secondary">
+                        <td colSpan={2}/>
                         <th>Summe Personen</th>
                         <th>{sumPeople()}</th>
                     </tr>
