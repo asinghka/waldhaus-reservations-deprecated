@@ -68,6 +68,7 @@ function ReservationHeader({filterToday = false}) {
                         <Form.Group controlId="dateFilter">
                         {!filterToday &&
                             <DatePicker
+                                inputProps={{ readOnly: true }}
                                 style={{ width: '220px' }}
                                 className="me-auto ms-3"
                                 defaultValue={new Date()}

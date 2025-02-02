@@ -219,6 +219,7 @@ const ReservationModal = ({ showModal, handleClose, reservations, initialReserva
                                 <Form.Group controlId="formDate">
                                 <Form.Label>Datum (<span style={{ color: "darkred" }}>*</span>)</Form.Label>
                                 <DatePicker
+                                    inputProps={{ readOnly: true }}
                                     disabled={!edit}
                                     value={date}
                                     min={new Date()}

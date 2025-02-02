@@ -33,6 +33,7 @@ function StatsHeader() {
             <Form className="d-flex">
                 <Localization date={new DateLocalizer({culture: "de"})}>
                     {yearView && <DatePicker
+                        inputProps={{ readOnly: true }}
                         style={{width: "250px"}}
                         value={filterDate}
                         valueFormat={yearView && {year: "numeric"}}
@@ -42,6 +43,7 @@ function StatsHeader() {
                         }}
                     />}
                     {!yearView && <DatePicker
+                        inputProps={{ readOnly: true }}
                         style={{width: "250px"}}
                         value={filterDate}
                         valueFormat={{month: "long", year: "numeric"}}

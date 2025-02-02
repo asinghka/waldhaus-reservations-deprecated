@@ -45,6 +45,7 @@ function AdminHeader() {
                 <Localization date={new DateLocalizer({culture: "de"})}>
                     <Form.Group controlId="dateFilter">
                         <DatePicker
+                            inputProps={{ readOnly: true }}
                             className="flex ms-3"
                             style={{ width: '250px' }}
                             value={filterDate}
