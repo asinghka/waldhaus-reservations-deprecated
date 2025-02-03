@@ -12,9 +12,9 @@ function ReservationHeader({filterToday = false}) {
     const location = useLocation();
     const params = new URLSearchParams(location.search);
 
-    const year = parseInt(params.get("year"), 10) || new Date().getFullYear();
-    const month = parseInt(params.get("month"), 10) - 1 || new Date().getMonth();
-    const day = parseInt(params.get("day"), 10) || new Date().getDate();
+    const year = parseInt(params.get("year"), 10);
+    const month = parseInt(params.get("month"), 10) - 1;
+    const day = parseInt(params.get("day"), 10);
 
     const [filterTerm, setFilterTerm] = useState("");
     const [filterDate, setFilterDate] = useState(new Date());
